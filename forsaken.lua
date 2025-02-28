@@ -203,6 +203,7 @@ local function FartHubLoad()
 		["Sigma Boy Phonk"] = "SigmaBoyPhonk.mp3",
 		["McMental"] = "McMental.mp3",
 		--["GrassSkirt"] = "GrassSkirt.mp3", removed because its too short and i didnt check when they uploaded this.
+		["HueHueHue"] = "huehuehue.mp3",
 	}
 
 	setclipboard("https://linkunlocker.com/fartsaken-ZINXl")
@@ -3078,6 +3079,100 @@ local function FartHubLoad()
 			end,
 		})
 
+		local UserInputService = game:GetService("UserInputService")
+local humanoid = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+local track = nil
+local jorkin = false
+local isAnimating = false
+
+local function stopTomfoolery()
+    jorkin = false
+    if track then
+        track.TimePosition = track.Length * 0.9
+        track:AdjustSpeed(0.5)
+        while track.TimePosition < track.Length do
+            task.wait(0.1)
+        end
+        track:Stop()
+        track = nil
+    end
+end
+
+BlatantTab:CreateDivider()
+
+local JorkinKeybind = BlatantTab:CreateKeybind({
+    Name = "Jorkin my peanits",
+    CurrentKeybind = "Z",
+    HoldToInteract = true,
+    Flag = "Jork",
+    Callback = function(Keybind)
+        if Keybind then
+            if not isAnimating then
+                isAnimating = true
+                if not jorkin then
+                    jorkin = true
+                end
+            end
+        else
+            if isAnimating then
+                isAnimating = false
+                stopTomfoolery()
+            end
+        end
+    end
+})
+
+humanoid.Died:Connect(stopTomfoolery)
+
+local track = nil
+local humanoid = Players.LocalPlayer.Character and Players.LocalPlayer.Character:WaitForChild("Humanoid")
+
+-- Function to reinitialize the animation after death
+local function reinitializeAnimation()
+    if humanoid then
+        -- Reset the track on death or respawn
+        if track then
+            track:Stop()  -- Stop the old animation if it exists
+            track = nil  -- Reset the track variable
+        end
+        -- Recreate the track for the new humanoid (after respawn)
+        local anim = Instance.new("Animation")
+        anim.AnimationId = (humanoid.RigType == Enum.HumanoidRigType.R15) and "rbxassetid://698251653" or "rbxassetid://72042024"
+        track = humanoid:LoadAnimation(anim)
+    end
+end
+
+-- Connect to the humanoid's death event to reset the animation
+Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    -- Wait for the new humanoid to be available
+    humanoid = character:WaitForChild("Humanoid")
+    -- Reinitialize the animation when respawned
+    reinitializeAnimation()
+end)
+
+-- Now run the animation in a non-blocking task
+task.spawn(function()
+    while true do
+        task.wait(0.1)  -- Small delay to avoid blocking other scripts
+
+        if jorkin then
+            if not track then
+                reinitializeAnimation()  -- Reinitialize the animation if track is not set
+            end
+            track:Play()
+            track:AdjustSpeed(humanoid.RigType == Enum.HumanoidRigType.R15 and 0.7 or 0.65)
+            track.TimePosition = 0.6
+
+            -- Loop the animation position back to 0.6
+            while track and track.TimePosition < (humanoid.RigType == Enum.HumanoidRigType.R15 and 0.7 or 0.65) do
+                task.wait(0.1)  -- Wait before checking the position again
+            end
+        end
+    end
+end)
+
+
+
 		BlatantTab:CreateDivider()
 
 		local BlockKeybind = BlatantTab:CreateKeybind({
@@ -3240,6 +3335,7 @@ local function FartHubLoad()
 				"Oh My Boy",
 				"Kendrake",
 				"Total Extermination",
+				--"Bad Apple",
 				"Random",
 			},
 			CurrentOption = { "Subway Surfers" },
@@ -3258,6 +3354,7 @@ local function FartHubLoad()
 					["Kendrake"] = "SomethingScary.mp4.Fart4",
 					["Oh My Boy"] = "OhMyBoy.mp4.Fart4",
 					["Total Extermination"] = "EvilFight.mp4.Fart4",
+					--["Bad Apple"] = "BadApple.mp4.Fart4",
 				}
 
 				local videoKeys = {}
@@ -3317,6 +3414,7 @@ local function FartHubLoad()
 				"Sigma Boy Phonk",
 				"McMental",
 				--"GrassSkirt",
+				"HueHueHue",
 			},
 			CurrentOption = { "Sigma Boy Phonk" },
 			MultipleOptions = false,
