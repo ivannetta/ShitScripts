@@ -6,19 +6,19 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
 local DCWebhook = (getgenv and getgenv().DiscordWebhook) or false
+local GenTime = tonumber(getgenv and getgenv().GeneratorTime) or 2.5
 if DCWebhook == "" then
 	DCWebhook = false
 end
 local ProfilePicture = ""
-local queueteleport = syn and syn.queue_on_teleport or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
-if queueteleport then
-	queueteleport([[
-        if getgenv then getgenv().DiscordWebhook = "]] .. tostring(DCWebhook) .. [[" end
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/ivannetta/ShitScripts/main/PathfindGens.lua'))()
-    ]])
-end
 
-print(DCWebhook)
+-- local queueteleport = syn and syn.queue_on_teleport or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+-- if queueteleport then
+-- 	queueteleport([[
+--         if getgenv then getgenv().DiscordWebhook = "]] .. tostring(DCWebhook) .. [[" end
+--         loadstring(game:HttpGet('https://raw.githubusercontent.com/ivannetta/ShitScripts/main/PathfindGens.lua'))()
+--     ]])
+-- end
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
 	Title = "PathfindGens",
@@ -360,7 +360,7 @@ local function DoAllGenerators()
 					g.Remotes.RE:FireServer()
 				end
 				if i < 6 and g.Progress.Value < 100 then
-					task.wait(2.5)
+					task.wait(GenTime)
 				end
 			end
 		else
