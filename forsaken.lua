@@ -1,5 +1,5 @@
 local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
-api.script_id = "624a0bc4ce8a5660f80ecd8d6d16b2a4"
+api.script_id = "d0632c30c8af0316aae11552dcb2a21d"
 local sigmakey
 local ApiStatusCode
 local KEY_FILE = "fartkey.txt"
