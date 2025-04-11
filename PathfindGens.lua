@@ -1,4 +1,10 @@
-task.wait((getgenv and tonumber(getgenv().LoadTime)) or 5)
+if getgenv and tonumber(getgenv().LoadTime) then
+	task.wait(tonumber(getgenv().LoadTime))
+else
+	repeat
+		task.wait()
+	until game:IsLoaded()
+end
 local VIMVIM = game:GetService("VirtualInputManager")
 local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
@@ -6,12 +12,9 @@ local PathfindingService = game:GetService("PathfindingService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
+
 local DCWebhook = (getgenv and getgenv().DiscordWebhook) or false
 local GenTime = tonumber(getgenv and getgenv().GeneratorTime) or 2.5
-if DCWebhook == "" then
-	DCWebhook = false
-end
-local ProfilePicture = ""
 
 -- local queueteleport = syn and syn.queue_on_teleport or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
 -- if queueteleport then
@@ -21,11 +24,170 @@ local ProfilePicture = ""
 --     ]])
 -- end
 
-game:GetService("StarterGui"):SetCore("SendNotification", {
-	Title = "PathfindGens",
-	Text = "Sigma Loaded 2",
-	Duration = 30,
-})
+local Nnnnnnotificvationui
+local AliveNotificaiotna = {}
+local ProfilePicture = ""
+
+if DCWebhook == "" then
+	DCWebhook = false
+end
+
+local function CreateNotificationUI()
+	if Nnnnnnotificvationui then
+		return Nnnnnnotificvationui
+	end
+
+	Nnnnnnotificvationui = Instance.new("ScreenGui")
+	Nnnnnnotificvationui.Name = "NotificationUI"
+	Nnnnnnotificvationui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	Nnnnnnotificvationui.Parent = game:GetService("CoreGui")
+
+	return Nnnnnnotificvationui
+end
+
+local function MakeNotif(title, message, duration, color)
+	local ui = CreateNotificationUI()
+
+	title = title or "Notification"
+	message = message or ""
+	duration = duration or 5
+	color = color or Color3.fromRGB(255, 200, 0)
+
+	local notification = Instance.new("Frame")
+	notification.Name = "Notification"
+	notification.Size = UDim2.new(0, 250, 0, 80)
+	notification.Position = UDim2.new(1, 50, 1, 10)
+	notification.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	notification.BorderSizePixel = 0
+	notification.Parent = ui
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 8)
+	corner.Parent = notification
+
+	local SIGMABERFIOENEW = Instance.new("TextLabel")
+	SIGMABERFIOENEW.Name = "Title"
+	SIGMABERFIOENEW.Size = UDim2.new(1, -25, 0, 25)
+	SIGMABERFIOENEW.Position = UDim2.new(0, 15, 0, 5)
+	SIGMABERFIOENEW.Font = Enum.Font.SourceSansBold
+	SIGMABERFIOENEW.Text = title
+	SIGMABERFIOENEW.TextSize = 18
+	SIGMABERFIOENEW.TextColor3 = color
+	SIGMABERFIOENEW.BackgroundTransparency = 1
+	SIGMABERFIOENEW.TextXAlignment = Enum.TextXAlignment.Left
+	SIGMABERFIOENEW.Parent = notification
+
+	local messageLabel = Instance.new("TextLabel")
+	messageLabel.Name = "Message"
+	messageLabel.Size = UDim2.new(1, -25, 0, 50)
+	messageLabel.Position = UDim2.new(0, 15, 0, 30)
+	messageLabel.Font = Enum.Font.SourceSans
+	messageLabel.Text = message
+	messageLabel.TextSize = 16
+	messageLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	messageLabel.BackgroundTransparency = 1
+	messageLabel.TextXAlignment = Enum.TextXAlignment.Left
+	messageLabel.TextWrapped = true
+	messageLabel.Parent = notification
+
+	local colorBar = Instance.new("Frame")
+	colorBar.Name = "ColorBar"
+	colorBar.Size = UDim2.new(0, 5, 1, 0)
+	colorBar.Position = UDim2.new(0, 0, 0, 0)
+	colorBar.BackgroundColor3 = color
+	colorBar.BorderSizePixel = 0
+	colorBar.Parent = notification
+
+	local barCorner = Instance.new("UICorner")
+	barCorner.CornerRadius = UDim.new(0, 8)
+	barCorner.Parent = colorBar
+
+	local offsit = 0
+	for _, notif in pairs(AliveNotificaiotna) do
+		if notif.Instance and notif.Instance.Parent then
+			offsit = offsit + notif.Instance.Size.Y.Offset + 10
+		end
+	end
+
+	local tagit = UDim2.new(1, -270, 1, -90 - offsit)
+
+	table.insert(AliveNotificaiotna, {
+		Instance = notification,
+		ExpireTime = os.time() + duration,
+	})
+
+	local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+	local ok = game:GetService("TweenService"):Create(notification, tweenInfo, { Position = tagit })
+	ok:Play()
+
+	task.spawn(function()
+		task.wait(duration)
+
+		local tweenOut = game:GetService("TweenService"):Create(
+			notification,
+			TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.In),
+			{ Position = UDim2.new(1, 50, notification.Position.Y.Scale, notification.Position.Y.Offset) }
+		)
+
+		tweenOut:Play()
+		tweenOut.Completed:Wait()
+
+		for i, notif in pairs(AliveNotificaiotna) do
+			if notif.Instance == notification then
+				table.remove(AliveNotificaiotna, i)
+				break
+			end
+		end
+
+		notification:Destroy()
+
+		task.wait()
+		local currentOffset = 0
+		for _, notif in pairs(AliveNotificaiotna) do
+			if notif.Instance and notif.Instance.Parent then
+				game:GetService("TweenService")
+					:Create(
+						notif.Instance,
+						TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+						{ Position = UDim2.new(1, -270, 1, -90 - currentOffset) }
+					)
+					:Play()
+
+				currentOffset = currentOffset + notif.Instance.Size.Y.Offset + 10
+			end
+		end
+	end)
+
+	return notification
+end
+
+task.spawn(function()
+	while task.wait(1) do
+		local currentTime = os.time()
+		local reposition = false
+
+		for i = #AliveNotificaiotna, 1, -1 do
+			local notif = AliveNotificaiotna[i]
+			if currentTime > notif.ExpireTime and notif.Instance and notif.Instance.Parent then
+				notif.Instance:Destroy()
+				table.remove(AliveNotificaiotna, i)
+				reposition = true
+			end
+		end
+
+		if reposition then
+			local currentOffset = 0
+			for _, notif in pairs(AliveNotificaiotna) do
+				if notif.Instance and notif.Instance.Parent then
+					notif.Instance.Position = UDim2.new(1, -270, 1, -90 - currentOffset)
+					currentOffset = currentOffset + notif.Instance.Size.Y.Offset + 10
+				end
+			end
+		end
+	end
+end)
+
+MakeNotif("Gen Pathfinding Shit", "It Loaded!", 5, Color3.fromRGB(115, 194, 89))
 
 local function GetProfilePicture()
 	local PlayerID = game:GetService("Players").LocalPlayer.UserId
@@ -83,6 +245,7 @@ local function SendWebhook(Title, Description, Color, ProfilePicture, Footer)
 		end
 	end)
 
+	MakeNotif("PathfindGens", "Sent webhook: " .. Title .. "\n" .. Description, 5, Color3.fromRGB(115, 194, 89))
 	if not success then
 		print("Error: " .. errorMessage)
 	end
@@ -133,6 +296,13 @@ local function teleportToRandomServer()
 				if data and data.data and #data.data > 0 then
 					local server = data.data[math.random(1, #data.data)]
 					if server.id then
+						MakeNotif(
+							"Teleporting...",
+							"Attempting to teleport to server: " .. server.id,
+							5,
+							Color3.fromRGB(115, 194, 89)
+						)
+						task.wait(0.25)
 						TeleportService:TeleportToPlaceInstance(18687417158, server.id, Players.LocalPlayer)
 						return
 					end
@@ -140,22 +310,24 @@ local function teleportToRandomServer()
 			end
 
 			Counter = Counter + 1
-			game:GetService("StarterGui"):SetCore("SendNotification", {
-				Title = "Grahh",
-				Text = "Serverhop got ratelimited im angry",
-				Duration = 11,
-			})
+			MakeNotif(
+				"PathfindGens",
+				"Retrying to get a server... Attempt " .. Counter .. "/" .. MaxRetry,
+				5,
+				Color3.fromRGB(255, 0, 0)
+			)
 			task.wait(RetryingDelays)
 		end
 	end
 end
 
-task.delay(5, function()
+task.delay(2.5, function()
 	pcall(function()
 		local timer = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("RoundTimer").Main.Time.ContentText
 		local minutes, seconds = timer:match("(%d+):(%d+)")
 		local totalSeconds = tonumber(minutes) * 60 + tonumber(seconds)
 		print(totalSeconds .. " Left till round end.")
+		MakeNotif("PathfindGens", "Round ends in " .. totalSeconds .. " seconds.", 5, Color3.fromRGB(115, 194, 89))
 		if totalSeconds > 90 then
 			teleportToRandomServer()
 		end
@@ -197,6 +369,27 @@ local function findGenerators()
 	return generators
 end
 
+local function VisualizePivot(model)
+	local pivot = model:GetPivot()
+
+	for i, dir in ipairs({
+		{ pivot.LookVector, Color3.fromRGB(0, 255, 0), "Front" },
+		{ -pivot.LookVector, Color3.fromRGB(255, 0, 0), "Back" },
+		{ pivot.RightVector, Color3.fromRGB(255, 255, 0), "Right" },
+		{ -pivot.RightVector, Color3.fromRGB(0, 0, 255), "Left" },
+	}) do
+		local part = Instance.new("Part")
+		part.Size = Vector3.new(1, 1, 1)
+		part.Anchored = true
+		part.CanCollide = false
+		part.Color = dir[2]
+		part.Name = dir[3]
+		part.Position = pivot.Position + dir[1] * 5
+		part.Parent = workspace
+	end
+end
+
+
 local function InGenerator()
 	for i, v in ipairs(game:GetService("Players").LocalPlayer.PlayerGui.TemporaryUI:GetChildren()) do
 		print(v.Name)
@@ -219,7 +412,7 @@ local function PathFinding(generator)
 
 	local function createNode(position)
 		local part = Instance.new("Part")
-		part.Size = Vector3.new(.6, .6, .6)
+		part.Size = Vector3.new(0.6, 0.6, 0.6)
 		part.Shape = Enum.PartType.Ball
 		part.Material = Enum.Material.Neon
 		part.Color = Color3.fromRGB(248, 255, 150)
@@ -245,19 +438,25 @@ local function PathFinding(generator)
 		end
 	end
 
-	if not generator or not generator.Parent then return false end
-	if not Players.LocalPlayer.Character or not Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then return false end
+	if not generator or not generator.Parent then
+		return false
+	end
+	if not Players.LocalPlayer.Character or not Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+		return false
+	end
 
 	local humanoid = Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
 	local rootPart = Players.LocalPlayer.Character.HumanoidRootPart
 	if not humanoid then
 		return false
-		end
+	end
 
-	local targetPosition = generator:GetPivot().Position
+	local targetPosition = generator:GetPivot().Position + generator:GetPivot().LookVector * 3
 	if not targetPosition then
 		return false
 	end
+
+	VisualizePivot(generator)
 
 	local path = game:GetService("PathfindingService"):CreatePath({
 		AgentRadius = 2.5,
@@ -280,8 +479,6 @@ local function PathFinding(generator)
 		return false
 	end
 
-	VIMVIM:SendKeyEvent(false, Enum.KeyCode.LeftShift, false, nil)
-
 	for i, waypoint in ipairs(waypoints) do
 		createNode(waypoint.Position)
 		humanoid:MoveTo(waypoint.Position)
@@ -298,11 +495,12 @@ local function PathFinding(generator)
 		end
 
 		if not reachedWaypoint then
+			if game:GetService("Players").LocalPlayer.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("Sprinting").Value < 1.1 then
+				VIMVIM:SendKeyEvent(true, Enum.KeyCode.LeftShift, false, nil)
+			end
 			return false
 		end
 	end
-
-	VIMVIM:SendKeyEvent(true, Enum.KeyCode.LeftShift, false, nil)
 
 	for _, node in ipairs(activeNodes) do
 		node:Destroy()
@@ -315,7 +513,6 @@ local function DoAllGenerators()
 	for _, g in ipairs(findGenerators()) do
 		local pathStarted = false
 		for attempt = 1, 3 do
-
 			-- dont need cuz im sigma mafiza boy
 			-- local playersNearby = false
 			-- for _, player in ipairs(Players:GetPlayers()) do
@@ -330,7 +527,7 @@ local function DoAllGenerators()
 			end
 
 			-- if not playersNearby and g:FindFirstChild("Progress") and g.Progress.Value < 100 then
-				-- g:GetPivot()
+			-- g:GetPivot()
 			-- end
 
 			pathStarted = PathFinding(g)
@@ -413,24 +610,25 @@ local function DidiDie()
 			if Players.LocalPlayer.Character.Humanoid.Health == 0 then
 				SendWebhook(
 					"Generator Autofarm",
-					"THIS STUPID KILLER KILLED ME IM SO ANGRY OMG \nCurrent Balance: " 
-					.. game:GetService("Players").LocalPlayer.PlayerData.Stats.Currency.Money.Value
-			        .. "\nTime Played: "
-			        .. (function()
-			        		local seconds = game:GetService("Players").LocalPlayer.PlayerData.Stats.General.TimePlayed.Value
-			        		local days = math.floor(seconds / (60 * 60 * 24))
-			        		seconds = seconds % (60 * 60 * 24)
-			        		local hours = math.floor(seconds / (60 * 60))
-			        		seconds = seconds % (60 * 60)
-			        		local minutes = math.floor(seconds / 60)
-			        		seconds = seconds % 60
-			        		return string.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds)
-			        end)(),
+					"THIS STUPID KILLER KILLED ME IM SO ANGRY OMG \nCurrent Balance: "
+						.. game:GetService("Players").LocalPlayer.PlayerData.Stats.Currency.Money.Value
+						.. "\nTime Played: "
+						.. (function()
+							local seconds =
+								game:GetService("Players").LocalPlayer.PlayerData.Stats.General.TimePlayed.Value
+							local days = math.floor(seconds / (60 * 60 * 24))
+							seconds = seconds % (60 * 60 * 24)
+							local hours = math.floor(seconds / (60 * 60))
+							seconds = seconds % (60 * 60)
+							local minutes = math.floor(seconds / 60)
+							seconds = seconds % 60
+							return string.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds)
+						end)(),
 					0xFF0000,
 					ProfilePicture,
 					".gg/fartsaken | <3"
 				)
-				task.wait(.5)
+				task.wait(0.5)
 				teleportToRandomServer()
 				break
 			end
