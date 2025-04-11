@@ -1,4 +1,5 @@
-task.wait(5)
+task.wait((getgenv and tonumber(getgenv().LoadTime)) or 5)
+local VIMVIM = game:GetService("VirtualInputManager")
 local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
 local PathfindingService = game:GetService("PathfindingService")
@@ -103,9 +104,11 @@ end
 
 _G.CancelPathEvent = Instance.new("BindableEvent")
 
-local Controller =
-	require(game.Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetControls()
-Controller:Disable()
+pcall(function()
+	local Controller =
+		require(game.Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetControls()
+	Controller:Disable()
+end)
 
 local function teleportToRandomServer()
 	local Counter = 0
@@ -277,6 +280,8 @@ local function PathFinding(generator)
 		return false
 	end
 
+	VIMVIM:SendKeyEvent(false, Enum.KeyCode.LeftShift, false, nil)
+
 	for i, waypoint in ipairs(waypoints) do
 		createNode(waypoint.Position)
 		humanoid:MoveTo(waypoint.Position)
@@ -296,6 +301,8 @@ local function PathFinding(generator)
 			return false
 		end
 	end
+
+	VIMVIM:SendKeyEvent(true, Enum.KeyCode.LeftShift, false, nil)
 
 	for _, node in ipairs(activeNodes) do
 		node:Destroy()
@@ -395,8 +402,6 @@ local function AmIInGameYet()
 		task.wait(1)
 		if child == game:GetService("Players").LocalPlayer.Character then
 			task.wait(4)
-			local VIMVIM = game:GetService("VirtualInputManager")
-			VIMVIM:SendKeyEvent(true, Enum.KeyCode.LeftShift, false, nil)
 			DoAllGenerators()
 		end
 	end)
