@@ -281,7 +281,7 @@ local function makeUI()
 
 	local GetKeyButton = MakeSigmaButton("Get Key", Color3.fromRGB(60, 65, 60), Color3.fromRGB(80, 85, 80))
 	GetKeyButton.Activated:Connect(function()
-		setclipboard("https://linkunlocker.com/fartsaken-key-luarmor-linkvertise-SNGKc")
+		setclipboard("https://linkunlocker.com/fartsaken-key-ZMdSg")
 		StatusLabel.Text = "Link copied to clipboard!"
 	end)
 
