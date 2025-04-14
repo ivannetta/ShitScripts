@@ -1,6 +1,7 @@
 local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
 api.script_id = "d0632c30c8af0316aae11552dcb2a21d"
 local sigmakey
+local KeyCheckingButtonSex
 local ApiStatusCode
 local KEY_FILE = "fartkey.txt"
 local STATUS_MESSAGES = {
@@ -159,7 +160,7 @@ local function makeUI()
 	KeyIcon.Position = UDim2.new(0.5, 0, 0, 60)
 	KeyIcon.Size = UDim2.new(0, 48, 0, 48)
 	KeyIcon.ZIndex = 12
-	KeyIcon.Image = "rbxassetid://6031302931" -- Key icon
+	KeyIcon.Image = "rbxassetid://6031302931"
 	KeyIcon.ImageColor3 = Color3.fromRGB(230, 255, 180)
 	KeyIcon.Parent = Frame
 
@@ -194,7 +195,6 @@ local function makeUI()
 	StatusLabel.ZIndex = 12
 	StatusLabel.Parent = Frame
 
-	-- Loading Bar Container
 	local LoadingBarContainer = Instance.new("Frame")
 	LoadingBarContainer.Size = UDim2.new(0.85, 0, 0, 10)
 	LoadingBarContainer.Position = UDim2.new(0.5, 0, 1, -65)
@@ -209,7 +209,6 @@ local function makeUI()
 	UICornerLoading.CornerRadius = UDim.new(0, 4)
 	UICornerLoading.Parent = LoadingBarContainer
 
-	-- Loading Bar Fill
 	local LoadingBarFill = Instance.new("Frame")
 	LoadingBarFill.Size = UDim2.new(0, 0, 1, 0)
 	LoadingBarFill.BackgroundColor3 = Color3.fromRGB(97, 255, 140)
@@ -279,13 +278,237 @@ local function makeUI()
 		return Button
 	end
 
-	local GetKeyButton = MakeSigmaButton("Get Key", Color3.fromRGB(60, 65, 60), Color3.fromRGB(80, 85, 80))
-	GetKeyButton.Activated:Connect(function()
-		setclipboard("https://linkunlocker.com/fartsaken-key-ZMdSg")
-		StatusLabel.Text = "Link copied to clipboard!"
+	local GetFartButton = MakeSigmaButton("Get Key", Color3.fromRGB(60, 65, 60), Color3.fromRGB(80, 85, 80))
+	GetFartButton.Activated:Connect(function()
+		GetFartButton.Active = false
+		GetFartButton.AutoButtonColor = false
+		game:GetService("TweenService"):Create(
+			GetFartButton,
+			TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+			{ Size = UDim2.new(0, 100, 0, 35), BackgroundTransparency = 0.5 }
+		):Play()
+
+		game:GetService("TweenService"):Create(
+			GetFartButton,
+			TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+			{ Size = UDim2.new(0, 0, 0, 35), Position = UDim2.new(-0.2, 0, 0, 0) }
+		):Play()
+
+		local text = GetFartButton.Text
+		local len = string.len(text)
+
+		for i = len, 1, -1 do
+			task.delay(0.015 * (len - i + 1), function()
+				GetFartButton.Text = string.sub(text, 1, i - 1)
+			end)
+		end
+		task.delay(0.1, function()
+			GetFartButton:Destroy()
+		end)
+
+		task.delay(0.17, function()
+			GetFartButton:Destroy()
+		end)
+
+		local KeyProvidersPanel = Instance.new("Frame")
+		KeyProvidersPanel.Size = UDim2.new(0.8, 0, 0, 0)
+		KeyProvidersPanel.Position = UDim2.new(0.5, 0, 1, 10)
+		KeyProvidersPanel.AnchorPoint = Vector2.new(0.5, 0)
+		KeyProvidersPanel.BackgroundColor3 = Color3.fromRGB(30, 35, 30)
+		KeyProvidersPanel.BorderSizePixel = 0
+		KeyProvidersPanel.ZIndex = 20
+		KeyProvidersPanel.Parent = Frame
+
+		local PanelCorner = Instance.new("UICorner")
+		PanelCorner.CornerRadius = UDim.new(0, 8)
+		PanelCorner.Parent = KeyProvidersPanel
+
+		local PanelStroke = Instance.new("UIStroke")
+		PanelStroke.Color = Color3.fromRGB(97, 255, 140)
+		PanelStroke.Thickness = 2
+		PanelStroke.Parent = KeyProvidersPanel
+
+		local ProvidersContainer = Instance.new("Frame")
+		ProvidersContainer.Size = UDim2.new(1, -20, 1, -10)
+		ProvidersContainer.Position = UDim2.new(0.5, 0, 0, 5)
+		ProvidersContainer.AnchorPoint = Vector2.new(0.5, 0)
+		ProvidersContainer.BackgroundTransparency = 1
+		ProvidersContainer.ZIndex = 21
+		ProvidersContainer.Parent = KeyProvidersPanel
+
+		local ProvidersList = Instance.new("UIListLayout")
+		ProvidersList.FillDirection = Enum.FillDirection.Horizontal
+		ProvidersList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+		ProvidersList.VerticalAlignment = Enum.VerticalAlignment.Center
+		ProvidersList.Padding = UDim.new(0, 10)
+		ProvidersList.Parent = ProvidersContainer
+
+		game:GetService("TweenService"):Create(
+			KeyProvidersPanel,
+			TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+			{Size = UDim2.new(1, 0, 0, 80)}
+		):Play()
+
+		local PanelGlow = Instance.new("ImageLabel")
+		PanelGlow.BackgroundTransparency = 1
+		PanelGlow.Image = "rbxassetid://7331400934"
+		PanelGlow.ImageColor3 = Color3.fromRGB(97, 255, 140)
+		PanelGlow.ImageTransparency = 0.7
+		PanelGlow.Size = UDim2.new(1.2, 0, 1.2, 0)
+		PanelGlow.Position = UDim2.new(-0.1, 0, -0.1, 0)
+		PanelGlow.ZIndex = 19
+		PanelGlow.Parent = KeyProvidersPanel
+
+		game:GetService("TweenService"):Create(
+			PanelGlow,
+			TweenInfo.new(0.8),
+			{ImageTransparency = 0.9}
+		):Play()
+
+		local function MakeKeyProviderButton(text, icon, color, hoverColor)
+			local Button = Instance.new("Frame")
+			Button.Size = UDim2.new(0.3, 6, 0, 65)
+			Button.BackgroundColor3 = color
+			Button.BorderSizePixel = 0
+			Button.ZIndex = 22
+			Button.Parent = ProvidersContainer
+
+			local UICornerButton = Instance.new("UICorner")
+			UICornerButton.CornerRadius = UDim.new(0, 6)
+			UICornerButton.Parent = Button
+
+			local Gradient = Instance.new("UIGradient")
+			Gradient.Rotation = 90
+			Gradient.Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, color),
+				ColorSequenceKeypoint.new(1, Color3.fromRGB(
+					math.clamp(color.R * 0.8, 0, 1) * 255,
+					math.clamp(color.G * 0.8, 0, 1) * 255,
+					math.clamp(color.B * 0.8, 0, 1) * 255
+				))
+			})
+			Gradient.Parent = Button
+
+			local Keypoopericon = Instance.new("ImageLabel")
+			Keypoopericon.BackgroundTransparency = 1
+			Keypoopericon.AnchorPoint = Vector2.new(0.5, 0)
+			Keypoopericon.Position = UDim2.new(0.5, 0, 0, 6)
+			Keypoopericon.Size = UDim2.new(0, 24, 0, 24)
+			Keypoopericon.ZIndex = 23
+			Keypoopericon.Image = "rbxassetid://" .. icon
+			Keypoopericon.Parent = Button
+
+			local PooperName = Instance.new("TextLabel")
+			PooperName.Size = UDim2.new(1, 0, 0, 20)
+			PooperName.Position = UDim2.new(0, 0, 1, -24)
+			PooperName.Text = text
+			PooperName.TextColor3 = Color3.fromRGB(255, 255, 255)
+			PooperName.BackgroundTransparency = 1
+			PooperName.TextSize = 12
+			PooperName.Font = Enum.Font.GothamBold
+			PooperName.ZIndex = 23
+			PooperName.Parent = Button
+
+			local ButtonForgot = Instance.new("TextButton")
+			ButtonForgot.Size = UDim2.new(1, 0, 1, 0)
+			ButtonForgot.Position = UDim2.new(0, 0, 0, 0)
+			ButtonForgot.BackgroundTransparency = 1
+			ButtonForgot.Text = ""
+			ButtonForgot.ZIndex = 24
+			ButtonForgot.Parent = Button
+
+			local GlowyButtonThing = Instance.new("ImageLabel")
+			GlowyButtonThing.BackgroundTransparency = 1
+			GlowyButtonThing.Image = "rbxassetid://7331400934"
+			GlowyButtonThing.ImageColor3 = Color3.fromRGB(255, 255, 255)
+			GlowyButtonThing.ImageTransparency = 1
+			GlowyButtonThing.Size = UDim2.new(1.2, 0, 1.2, 0)
+			GlowyButtonThing.Position = UDim2.new(-0.1, 0, -0.1, 0)
+			GlowyButtonThing.ZIndex = 21
+			GlowyButtonThing.Parent = Button
+
+			ButtonForgot.MouseEnter:Connect(function()
+				game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), { BackgroundColor3 = hoverColor }):Play()
+				game:GetService("TweenService"):Create(GlowyButtonThing, TweenInfo.new(0.2), { ImageTransparency = 0.7 }):Play()
+			end)
+
+			ButtonForgot.MouseLeave:Connect(function()
+				game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), { BackgroundColor3 = color }):Play()
+				game:GetService("TweenService"):Create(GlowyButtonThing, TweenInfo.new(0.2), { ImageTransparency = 1 }):Play()
+			end)
+
+			return ButtonForgot
+		end
+
+		local Lootlibs = MakeKeyProviderButton(
+			"LootLabs",
+			"89429366953434",
+			Color3.fromRGB(60, 65, 60),
+			Color3.fromRGB(80, 85, 80)
+		)
+
+		local Workinky = MakeKeyProviderButton(
+			"WorKink",
+			"80731952209461",
+			Color3.fromRGB(60, 65, 60),
+			Color3.fromRGB(80, 85, 80)
+		)
+
+		local Linkvertis = MakeKeyProviderButton(
+			"Linkvertise",
+			"91094527924039",
+			Color3.fromRGB(60, 65, 60),
+			Color3.fromRGB(80, 85, 80)
+		)
+
+		local function MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(button)
+			for i = 1, 6 do
+				local PARTICL = Instance.new("Frame")
+				PARTICL.BackgroundColor3 = Color3.fromRGB(97, 255, 140)
+				PARTICL.BackgroundTransparency = 0.7
+				PARTICL.Size = UDim2.new(0, math.random(2, 4), 0, math.random(2, 4))
+				PARTICL.Position = UDim2.new(0.5, math.random(-50, 50), 0.5, math.random(-20, 20))
+				PARTICL.ZIndex = 30
+				PARTICL.Parent = button
+
+				local particleCorner = Instance.new("UICorner")
+				particleCorner.CornerRadius = UDim.new(1, 0)
+				particleCorner.Parent = PARTICL
+
+				game:GetService("TweenService"):Create(
+					PARTICL, 
+					TweenInfo.new(0.5),
+					{
+						BackgroundTransparency = 1,
+						Position = UDim2.new(PARTICL.Position.X.Scale, PARTICL.Position.X.Offset, 
+											PARTICL.Position.Y.Scale - 0.3, PARTICL.Position.Y.Offset)
+					}
+				):Play()
+
+				game:GetService("Debris"):AddItem(PARTICL, 0.5)
+			end
+		end
+
+		Lootlibs.Activated:Connect(function()
+			setclipboard("https://loot-labs.com/fartsaken-key")
+			StatusLabel.Text = "LootLabs link copied to clipboard!"
+			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Lootlibs.Parent)
+		end)
+
+		Workinky.Activated:Connect(function()
+			setclipboard("https://workink.net/1Q8c/fartsaken-key")
+			StatusLabel.Text = "WorKink link copied to clipboard!"
+			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Workinky.Parent)
+		end)
+
+		Linkvertis.Activated:Connect(function()
+			setclipboard("https://link-target.net/506927/fartsaken-key-link")
+			StatusLabel.Text = "Linkvertise link copied to clipboard!"
+			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Linkvertis.Parent)
+		end)
 	end)
 
-	local function showLoadingAnimation()
+	local function BESTLOADINGANIMATIONNOTFAKE()
 		TextBox.Visible = false
 		StatusLabel.Visible = false
 		ButtonsFrame.Visible = false
@@ -371,8 +594,8 @@ local function makeUI()
 		end)
 	end
 
-	local CheckKeyButton = MakeSigmaButton("Check Key", Color3.fromRGB(80, 180, 100), Color3.fromRGB(100, 200, 120))
-	CheckKeyButton.Activated:Connect(function()
+	KeyCheckingButtonSex = MakeSigmaButton("Check Key", Color3.fromRGB(80, 180, 100), Color3.fromRGB(100, 200, 120))
+	KeyCheckingButtonSex.Activated:Connect(function()
 		local key = TextBox.Text:gsub("%s+", "")
 		StatusLabel.Text = "Checking key..."
 
@@ -384,7 +607,7 @@ local function makeUI()
 			sigmakey = key
 			ApiStatusCode = status.code
 
-			showLoadingAnimation()
+			BESTLOADINGANIMATIONNOTFAKE()
 		else
 			StatusLabel.Text = STATUS_MESSAGES[status.code] or status.message
 			StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
