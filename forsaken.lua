@@ -490,19 +490,19 @@ local function makeUI()
 		end
 
 		Lootlibs.Activated:Connect(function()
-			setclipboard("https://loot-labs.com/fartsaken-key")
+			setclipboard("https://linkunlocker.com/fartsaken-luarmor-lootlabs-Pl9yC")
 			StatusLabel.Text = "LootLabs link copied to clipboard!"
 			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Lootlibs.Parent)
 		end)
 
 		Workinky.Activated:Connect(function()
-			setclipboard("https://workink.net/1Q8c/fartsaken-key")
+			setclipboard("https://linkunlocker.com/fartsaken-key-luarmor-linkvertise-SNGKc")
 			StatusLabel.Text = "WorKink link copied to clipboard!"
 			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Workinky.Parent)
 		end)
 
 		Linkvertis.Activated:Connect(function()
-			setclipboard("https://link-target.net/506927/fartsaken-key-link")
+			setclipboard("https://linkunlocker.com/fartsaken-key-ZMdSg")
 			StatusLabel.Text = "Linkvertise link copied to clipboard!"
 			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Linkvertis.Parent)
 		end)
