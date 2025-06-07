@@ -3,7 +3,7 @@ if string.split(identifyexecutor() or "None", " ")[1] == "Xeno" then
 end
 
 local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
-api.script_id = "d0632c30c8af0316aae11552dcb2a21d"
+api.script_id = "d0a352d474c8c4107c512d2421582c1c"
 local sigmakey
 local KeyCheckingButtonSex
 local ApiStatusCode
