@@ -105,9 +105,8 @@ end
 
 local Gay = {}
 
-game:GetService("Players").LocalPlayer.NameDisplayDistance = 0
-
 for _, player in ipairs(players:GetPlayers()) do
+	game:GetService("Players").LocalPlayer.NameDisplayDistance = 1
 	if player ~= lp then
 		local fake = fatty(#player.DisplayName)
 		Gay[player.Name] = fatty(#player.Name)
@@ -120,6 +119,7 @@ for _, player in ipairs(players:GetPlayers()) do
 end
 
 players.PlayerAdded:Connect(function(player)
+	game:GetService("Players").LocalPlayer.NameDisplayDistance = 1
 	if player ~= lp then
 		player.CharacterAdded:Connect(function()
 			local fake = fatty(#player.DisplayName)
