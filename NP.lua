@@ -104,6 +104,9 @@ local function fatty(len)
 end
 
 local Gay = {}
+
+game:GetService("Players").LocalPlayer.NameDisplayDistance = 0
+
 for _, player in ipairs(players:GetPlayers()) do
 	if player ~= lp then
 		local fake = fatty(#player.DisplayName)
