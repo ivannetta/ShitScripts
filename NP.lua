@@ -106,10 +106,30 @@ end
 local Gay = {}
 for _, player in ipairs(players:GetPlayers()) do
 	if player ~= lp then
+		local fake = fatty(#player.DisplayName)
 		Gay[player.Name] = fatty(#player.Name)
-		Gay[player.DisplayName] = fatty(#player.DisplayName)
+		Gay[player.DisplayName] = fake
+
+		pcall(function()
+			player.DisplayName = fake
+		end)
 	end
 end
+
+players.PlayerAdded:Connect(function(player)
+	if player ~= lp then
+		player.CharacterAdded:Connect(function()
+			local fake = fatty(#player.DisplayName)
+			Gay[player.Name] = fatty(#player.Name)
+			Gay[player.DisplayName] = fake
+
+			pcall(function()
+				player.DisplayName = fake
+			end)
+		end)
+	end
+end)
+
 
 local function processtext(text)
 	if not text or type(text) ~= "string" then
