@@ -1,16 +1,15 @@
 local HttpService = game:GetService("HttpService")
+local players = game:GetService('Players')
 
 if not getgenv().Config then
     getgenv().Config = {
     Headless = false,
     
-    FakeDisplayName = "AmySchumer",
-    FakeName = "redmiint8",
-    FakeId = 13886182,
+    FakeDisplayName = "Stupid Fart",
+    FakeName = "gayboy",
+    FakeId = 39348582,
 }
 end
-
-local players = game:GetService('Players')
 
 function disguisechar(char, id)
 	task.spawn(function()
