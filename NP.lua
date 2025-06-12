@@ -118,8 +118,14 @@ for _, player in ipairs(players:GetPlayers()) do
 	end
 end
 
+task.spawn(function()
+	while task.wait() do
+		game:GetService("Players").LocalPlayer.NameDisplayDistance = 0
+		game:GetService("Players").LocalPlayer.NameDisplayDistance = 1
+	end
+end)
+
 players.PlayerAdded:Connect(function(player)
-	game:GetService("Players").LocalPlayer.NameDisplayDistance = 1
 	if player ~= lp then
 		player.CharacterAdded:Connect(function()
 			local fake = fatty(#player.DisplayName)
