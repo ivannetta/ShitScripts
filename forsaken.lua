@@ -494,20 +494,20 @@ local function makeUI()
 		end
 
 		Lootlibs.Activated:Connect(function()
-			setclipboard("https://ads.luarmor.net/get_key?for=Linkvertise_Fartsaken-reUHQiodPyNj")
-			StatusLabel.Text = "this is also linkvertise."
+			setclipboard("https://ads.luarmor.net/get_key?for=work-JWCiabiNjubp")
+			StatusLabel.Text = "This one is also workink"
 			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Lootlibs.Parent)
 		end)
 
 		Workinky.Activated:Connect(function()
-			setclipboard("https://ads.luarmor.net/get_key?for=Linkvertise_Fartsaken-reUHQiodPyNj")
-			StatusLabel.Text = "Link Copied! this is acsually linkvertise!"
+			setclipboard("https://ads.luarmor.net/get_key?for=work-JWCiabiNjubp")
+			StatusLabel.Text = "Link Copied!"
 			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Workinky.Parent)
 		end)
 
 		Linkvertis.Activated:Connect(function()
-			setclipboard("https://ads.luarmor.net/get_key?for=Linkvertise_Fartsaken-reUHQiodPyNj")
-			StatusLabel.Text = "I lied, all the links are linkvertise..."
+			setclipboard("https://ads.luarmor.net/get_key?for=work-JWCiabiNjubp")
+			StatusLabel.Text = "Yeah this is also workink"
 			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Linkvertis.Parent)
 		end)
 	end)
