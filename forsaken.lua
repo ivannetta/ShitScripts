@@ -5,9 +5,9 @@ end
 local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
 api.script_id = "d0a352d474c8c4107c512d2421582c1c"
 local sigmakey
+local NewScriptId = ""
 local KeyCheckingButtonSex
 local ApiStatusCode
-local LopticaKey = ""
 local KEY_FILE = "fartkey.txt"
 local STATUS_MESSAGES = {
 	KEY_VALID = "Key valid! Loading script...",
@@ -854,7 +854,7 @@ local function makeScriptPickerUI()
 	NewScript.Position = UDim2.new(0.5, 0, 0, 60)
 
 	OldScript.Activated:Connect(function()
-		LopticaKey = "d0a352d474c8c4107c512d2421582c1c"
+		NewScriptId = "d0a352d474c8c4107c512d2421582c1c"
 		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
 		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
 			scringui:Destroy()
@@ -863,7 +863,7 @@ local function makeScriptPickerUI()
 	end)
 
 	NewScript.Activated:Connect(function()
-		LopticaKey = "ed420b2ef0304c876277e626fef234c6"
+		NewScriptId = "ed420b2ef0304c876277e626fef234c6"
 		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
 		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
 			scringui:Destroy()
@@ -879,10 +879,13 @@ end
 
 makeScriptPickerUI()
 
-while LopticaKey == "" do
+while NewScriptId == "" do
 	task.wait(0.1)
 end
 
-script_key = LopticaKey
+print("Selected Script ID: " .. NewScriptId)
+
+script_key = sigmakey
+api.script_id = NewScriptId
 api.load_script()
 -- Claude generated UI because im too lazy to make my own and shit thx
