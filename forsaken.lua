@@ -1,6 +1,5 @@
---!nocheck
 if string.split(identifyexecutor() or "None", " ")[1] == "Xeno" then
-	getgenv().WebSocket = nil
+    getgenv().WebSocket = nil
 end
 
 local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
@@ -27,7 +26,7 @@ local function LoaderTheKeyPlease()
 	return ""
 end
 
-local function CheckiKey(key: any)
+local function CheckiKey(key)
 	if not key or key == "" then
 		return { code = "KEY_INCORRECT", message = "Key cannot be empty" }
 	end
@@ -200,6 +199,45 @@ local function makeUI()
 	StatusLabel.ZIndex = 12
 	StatusLabel.Parent = Frame
 
+	local LoadingBarContainer = Instance.new("Frame")
+	LoadingBarContainer.Size = UDim2.new(0.85, 0, 0, 10)
+	LoadingBarContainer.Position = UDim2.new(0.5, 0, 1, -65)
+	LoadingBarContainer.AnchorPoint = Vector2.new(0.5, 0)
+	LoadingBarContainer.BackgroundColor3 = Color3.fromRGB(50, 55, 50)
+	LoadingBarContainer.BorderSizePixel = 0
+	LoadingBarContainer.ZIndex = 12
+	LoadingBarContainer.Visible = false
+	LoadingBarContainer.Parent = Frame
+
+	local UICornerLoading = Instance.new("UICorner")
+	UICornerLoading.CornerRadius = UDim.new(0, 4)
+	UICornerLoading.Parent = LoadingBarContainer
+
+	local LoadingBarFill = Instance.new("Frame")
+	LoadingBarFill.Size = UDim2.new(0, 0, 1, 0)
+	LoadingBarFill.BackgroundColor3 = Color3.fromRGB(97, 255, 140)
+	LoadingBarFill.BorderSizePixel = 0
+	LoadingBarFill.ZIndex = 13
+	LoadingBarFill.Parent = LoadingBarContainer
+
+	local UICornerFill = Instance.new("UICorner")
+	UICornerFill.CornerRadius = UDim.new(0, 4)
+	UICornerFill.Parent = LoadingBarFill
+
+	-- Loading Text
+	local LoadingText = Instance.new("TextLabel")
+	LoadingText.Size = UDim2.new(0.85, 0, 0, 20)
+	LoadingText.Position = UDim2.new(0.5, 0, 1, -85)
+	LoadingText.AnchorPoint = Vector2.new(0.5, 0)
+	LoadingText.Text = "Loading..."
+	LoadingText.TextColor3 = Color3.fromRGB(97, 255, 140)
+	LoadingText.BackgroundTransparency = 1
+	LoadingText.TextSize = 14
+	LoadingText.Font = Enum.Font.GothamBold
+	LoadingText.ZIndex = 12
+	LoadingText.Visible = false
+	LoadingText.Parent = Frame
+
 	local ButtonsFrame = Instance.new("Frame")
 	ButtonsFrame.Name = "ButtonsFrame"
 	ButtonsFrame.BackgroundTransparency = 1
@@ -244,6 +282,322 @@ local function makeUI()
 		return Button
 	end
 
+	local GetFartButton = MakeSigmaButton("Get Key", Color3.fromRGB(60, 65, 60), Color3.fromRGB(80, 85, 80))
+	GetFartButton.Activated:Connect(function()
+		GetFartButton.Active = false
+		GetFartButton.AutoButtonColor = false
+		game:GetService("TweenService"):Create(
+			GetFartButton,
+			TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+			{ Size = UDim2.new(0, 100, 0, 35), BackgroundTransparency = 0.5 }
+		):Play()
+
+		game:GetService("TweenService"):Create(
+			GetFartButton,
+			TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+			{ Size = UDim2.new(0, 0, 0, 35), Position = UDim2.new(-0.2, 0, 0, 0) }
+		):Play()
+
+		local text = GetFartButton.Text
+		local len = string.len(text)
+
+		for i = len, 1, -1 do
+			task.delay(0.015 * (len - i + 1), function()
+				GetFartButton.Text = string.sub(text, 1, i - 1)
+			end)
+		end
+		task.delay(0.1, function()
+			GetFartButton:Destroy()
+		end)
+
+		task.delay(0.17, function()
+			GetFartButton:Destroy()
+		end)
+
+		local KeyProvidersPanel = Instance.new("Frame")
+		KeyProvidersPanel.Size = UDim2.new(0.8, 0, 0, 0)
+		KeyProvidersPanel.Position = UDim2.new(0.5, 0, 1, 10)
+		KeyProvidersPanel.AnchorPoint = Vector2.new(0.5, 0)
+		KeyProvidersPanel.BackgroundColor3 = Color3.fromRGB(30, 35, 30)
+		KeyProvidersPanel.BorderSizePixel = 0
+		KeyProvidersPanel.ZIndex = 20
+		KeyProvidersPanel.Parent = Frame
+
+		local PanelCorner = Instance.new("UICorner")
+		PanelCorner.CornerRadius = UDim.new(0, 8)
+		PanelCorner.Parent = KeyProvidersPanel
+
+		local PanelStroke = Instance.new("UIStroke")
+		PanelStroke.Color = Color3.fromRGB(97, 255, 140)
+		PanelStroke.Thickness = 2
+		PanelStroke.Parent = KeyProvidersPanel
+
+		local ProvidersContainer = Instance.new("Frame")
+		ProvidersContainer.Size = UDim2.new(1, -20, 1, -10)
+		ProvidersContainer.Position = UDim2.new(0.5, 0, 0, 5)
+		ProvidersContainer.AnchorPoint = Vector2.new(0.5, 0)
+		ProvidersContainer.BackgroundTransparency = 1
+		ProvidersContainer.ZIndex = 21
+		ProvidersContainer.Parent = KeyProvidersPanel
+
+		local ProvidersList = Instance.new("UIListLayout")
+		ProvidersList.FillDirection = Enum.FillDirection.Horizontal
+		ProvidersList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+		ProvidersList.VerticalAlignment = Enum.VerticalAlignment.Center
+		ProvidersList.Padding = UDim.new(0, 10)
+		ProvidersList.Parent = ProvidersContainer
+
+		game:GetService("TweenService"):Create(
+			KeyProvidersPanel,
+			TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+			{Size = UDim2.new(1, 0, 0, 80)}
+		):Play()
+
+		local PanelGlow = Instance.new("ImageLabel")
+		PanelGlow.BackgroundTransparency = 1
+		PanelGlow.Image = "rbxassetid://7331400934"
+		PanelGlow.ImageColor3 = Color3.fromRGB(97, 255, 140)
+		PanelGlow.ImageTransparency = 0.7
+		PanelGlow.Size = UDim2.new(1.2, 0, 1.2, 0)
+		PanelGlow.Position = UDim2.new(-0.1, 0, -0.1, 0)
+		PanelGlow.ZIndex = 19
+		PanelGlow.Parent = KeyProvidersPanel
+
+		game:GetService("TweenService"):Create(
+			PanelGlow,
+			TweenInfo.new(0.8),
+			{ImageTransparency = 0.9}
+		):Play()
+
+		local function MakeKeyProviderButton(text, icon, color, hoverColor)
+			local Button = Instance.new("Frame")
+			Button.Size = UDim2.new(0.3, 6, 0, 65)
+			Button.BackgroundColor3 = color
+			Button.BorderSizePixel = 0
+			Button.ZIndex = 22
+			Button.Parent = ProvidersContainer
+
+			local UICornerButton = Instance.new("UICorner")
+			UICornerButton.CornerRadius = UDim.new(0, 6)
+			UICornerButton.Parent = Button
+
+			local Gradient = Instance.new("UIGradient")
+			Gradient.Rotation = 90
+			Gradient.Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, color),
+				ColorSequenceKeypoint.new(1, Color3.fromRGB(
+					math.clamp(color.R * 0.8, 0, 1) * 255,
+					math.clamp(color.G * 0.8, 0, 1) * 255,
+					math.clamp(color.B * 0.8, 0, 1) * 255
+				))
+			})
+			Gradient.Parent = Button
+
+			local Keypoopericon = Instance.new("ImageLabel")
+			Keypoopericon.BackgroundTransparency = 1
+			Keypoopericon.AnchorPoint = Vector2.new(0.5, 0)
+			Keypoopericon.Position = UDim2.new(0.5, 0, 0, 6)
+			Keypoopericon.Size = UDim2.new(0, 24, 0, 24)
+			Keypoopericon.ZIndex = 23
+			Keypoopericon.Image = "rbxassetid://" .. icon
+			Keypoopericon.Parent = Button
+
+			local PooperName = Instance.new("TextLabel")
+			PooperName.Size = UDim2.new(1, 0, 0, 20)
+			PooperName.Position = UDim2.new(0, 0, 1, -24)
+			PooperName.Text = text
+			PooperName.TextColor3 = Color3.fromRGB(255, 255, 255)
+			PooperName.BackgroundTransparency = 1
+			PooperName.TextSize = 12
+			PooperName.Font = Enum.Font.GothamBold
+			PooperName.ZIndex = 23
+			PooperName.Parent = Button
+
+			local ButtonForgot = Instance.new("TextButton")
+			ButtonForgot.Size = UDim2.new(1, 0, 1, 0)
+			ButtonForgot.Position = UDim2.new(0, 0, 0, 0)
+			ButtonForgot.BackgroundTransparency = 1
+			ButtonForgot.Text = ""
+			ButtonForgot.ZIndex = 24
+			ButtonForgot.Parent = Button
+
+			local GlowyButtonThing = Instance.new("ImageLabel")
+			GlowyButtonThing.BackgroundTransparency = 1
+			GlowyButtonThing.Image = "rbxassetid://7331400934"
+			GlowyButtonThing.ImageColor3 = Color3.fromRGB(255, 255, 255)
+			GlowyButtonThing.ImageTransparency = 1
+			GlowyButtonThing.Size = UDim2.new(1.2, 0, 1.2, 0)
+			GlowyButtonThing.Position = UDim2.new(-0.1, 0, -0.1, 0)
+			GlowyButtonThing.ZIndex = 21
+			GlowyButtonThing.Parent = Button
+
+			ButtonForgot.MouseEnter:Connect(function()
+				game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), { BackgroundColor3 = hoverColor }):Play()
+				game:GetService("TweenService"):Create(GlowyButtonThing, TweenInfo.new(0.2), { ImageTransparency = 0.7 }):Play()
+			end)
+
+			ButtonForgot.MouseLeave:Connect(function()
+				game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), { BackgroundColor3 = color }):Play()
+				game:GetService("TweenService"):Create(GlowyButtonThing, TweenInfo.new(0.2), { ImageTransparency = 1 }):Play()
+			end)
+
+			return ButtonForgot
+		end
+
+		local Lootlibs = MakeKeyProviderButton(
+			"LootLabs",
+			"89429366953434",
+			Color3.fromRGB(60, 65, 60),
+			Color3.fromRGB(80, 85, 80)
+		)
+
+		local Workinky = MakeKeyProviderButton(
+			"WorKink",
+			"80731952209461",
+			Color3.fromRGB(60, 65, 60),
+			Color3.fromRGB(80, 85, 80)
+		)
+
+		local Linkvertis = MakeKeyProviderButton(
+			"Linkvertise",
+			"91094527924039",
+			Color3.fromRGB(60, 65, 60),
+			Color3.fromRGB(80, 85, 80)
+		)
+
+		local function MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(button)
+			for i = 1, 6 do
+				local PARTICL = Instance.new("Frame")
+				PARTICL.BackgroundColor3 = Color3.fromRGB(97, 255, 140)
+				PARTICL.BackgroundTransparency = 0.7
+				PARTICL.Size = UDim2.new(0, math.random(2, 4), 0, math.random(2, 4))
+				PARTICL.Position = UDim2.new(0.5, math.random(-50, 50), 0.5, math.random(-20, 20))
+				PARTICL.ZIndex = 30
+				PARTICL.Parent = button
+
+				local particleCorner = Instance.new("UICorner")
+				particleCorner.CornerRadius = UDim.new(1, 0)
+				particleCorner.Parent = PARTICL
+
+				game:GetService("TweenService"):Create(
+					PARTICL, 
+					TweenInfo.new(0.5),
+					{
+						BackgroundTransparency = 1,
+						Position = UDim2.new(PARTICL.Position.X.Scale, PARTICL.Position.X.Offset, 
+											PARTICL.Position.Y.Scale - 0.3, PARTICL.Position.Y.Offset)
+					}
+				):Play()
+
+				game:GetService("Debris"):AddItem(PARTICL, 0.5)
+			end
+		end
+
+		Lootlibs.Activated:Connect(function()
+			setclipboard("https://ads.luarmor.net/get_key?for=work-JWCiabiNjubp")
+			StatusLabel.Text = "this is also Workink."
+			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Lootlibs.Parent)
+		end)
+
+		Workinky.Activated:Connect(function()
+			setclipboard("https://ads.luarmor.net/get_key?for=work-JWCiabiNjubp")
+			StatusLabel.Text = "Link Copied! this is acsually Workink!"
+			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Workinky.Parent)
+		end)
+
+		Linkvertis.Activated:Connect(function()
+			setclipboard("https://ads.luarmor.net/get_key?for=work-JWCiabiNjubp")
+			StatusLabel.Text = "I lied, all the links are Workink..."
+			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Linkvertis.Parent)
+		end)
+	end)
+
+	local function BESTLOADINGANIMATIONNOTFAKE()
+		TextBox.Visible = false
+		StatusLabel.Visible = false
+		ButtonsFrame.Visible = false
+
+		LoadingBarContainer.Visible = true
+		LoadingText.Visible = true
+
+		LoadingText.Text = "Validating key..."
+
+		local startTime = tick()
+		local duration = 1.5
+		local connection
+
+		connection = game:GetService("RunService").RenderStepped:Connect(function()
+			local elapsed = tick() - startTime
+			local progress = math.min(elapsed / duration, 1)
+
+			local easedProgress = 1 - (1 - progress) ^ 3
+
+			LoadingBarFill.Size = UDim2.new(easedProgress, 0, 1, 0)
+
+			if progress < 0.3 then
+				LoadingText.Text = "Checking key..."
+			elseif progress < 0.6 then
+				LoadingText.Text = "Authenticating..."
+			elseif progress < 0.9 then
+				LoadingText.Text = "This totaly does something..."
+			else
+				LoadingText.Text = "Authenticated."
+			end
+
+			if math.random() < 0.1 and progress > 0.5 then
+				local particle = Instance.new("Frame")
+				particle.BackgroundColor3 = Color3.fromRGB(97, 255, 140)
+				particle.BackgroundTransparency = 0.7
+				particle.Size = UDim2.new(0, math.random(2, 4), 0, math.random(2, 4))
+				particle.Position =
+					UDim2.new(easedProgress * math.random(80, 100) / 100, 0, math.random(-10, 10) / 10, 0)
+				particle.ZIndex = 14
+				particle.Parent = LoadingBarContainer
+
+				local particleCorner = Instance.new("UICorner")
+				particleCorner.CornerRadius = UDim.new(1, 0)
+				particleCorner.Parent = particle
+
+				game:GetService("TweenService")
+					:Create(particle, TweenInfo.new(0.5), {
+						BackgroundTransparency = 1,
+						Position = UDim2.new(particle.Position.X.Scale, 0, particle.Position.Y.Scale - 0.3, 0),
+					})
+					:Play()
+
+				game:GetService("Debris"):AddItem(particle, 0.5)
+			end
+
+			if progress >= 1 then
+				connection:Disconnect()
+
+				game:GetService("TweenService")
+					:Create(
+						LoadingBarFill,
+						TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+						{ BackgroundColor3 = Color3.fromRGB(170, 255, 200) }
+					)
+					:Play()
+
+				task.delay(0.3, function()
+					game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), { Size = 0 }):Play()
+
+					local closeTween = game:GetService("TweenService"):Create(
+						Frame,
+						TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+						{ Size = UDim2.new(0, 0, 0, 0) }
+					)
+					closeTween:Play()
+
+					closeTween.Completed:Connect(function()
+						blurEffect:Destroy()
+						scringui:Destroy()
+					end)
+				end)
+			end
+		end)
+	end
+
 	KeyCheckingButtonSex = MakeSigmaButton("Check Key", Color3.fromRGB(80, 180, 100), Color3.fromRGB(100, 200, 120))
 	KeyCheckingButtonSex.Activated:Connect(function()
 		local key = TextBox.Text:gsub("%s+", "")
@@ -256,6 +610,8 @@ local function makeUI()
 			StatusLabel.TextColor3 = Color3.fromRGB(97, 255, 140)
 			sigmakey = key
 			ApiStatusCode = status.code
+
+			BESTLOADINGANIMATIONNOTFAKE()
 		else
 			StatusLabel.Text = STATUS_MESSAGES[status.code] or status.message
 			StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
@@ -319,118 +675,89 @@ if key and key ~= "" then
 	ApiStatusCode = status.code
 	if status.code == "KEY_VALID" then
 		sigmakey = key
-		local function showScriptSelectionPopup()
-			local selectionGui = Instance.new("ScreenGui")
-			selectionGui.Name = "ScriptVersionSelector"
-			selectionGui.Parent = game.CoreGui
+		local Notificationes = 0
+		local function MakeNotificatione(title, message, duration)
+			duration = duration or 3
 
-			local frame = Instance.new("Frame")
-			frame.Size = UDim2.new(0, 320, 0, 180)
-			frame.Position = UDim2.new(0.5, 0, 0.5, 0)
-			frame.AnchorPoint = Vector2.new(0.5, 0.5)
-			frame.BackgroundColor3 = Color3.fromRGB(30, 35, 30)
-			frame.BorderSizePixel = 0
-			frame.Parent = selectionGui
+			local NotificationeIndexirus = Notificationes
+			Notificationes = Notificationes + 1
+
+			local ScreenGui = Instance.new("ScreenGui")
+			ScreenGui.Name = "NotificationUI_" .. NotificationeIndexirus
+			ScreenGui.Parent = game.CoreGui
+
+			local Frame = Instance.new("Frame")
+			Frame.Size = UDim2.new(0, 280, 0, 80)
+			Frame.Position = UDim2.new(1, -290, 0, 20 + (NotificationeIndexirus * 90))
+			Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+			Frame.BorderSizePixel = 0
+			Frame.Parent = ScreenGui
 
 			local UICorner = Instance.new("UICorner")
 			UICorner.CornerRadius = UDim.new(0, 8)
-			UICorner.Parent = frame
+			UICorner.Parent = Frame
 
-			local UIStroke = Instance.new("UIStroke")
-			UIStroke.Color = Color3.fromRGB(97, 255, 140)
-			UIStroke.Thickness = 2
-			UIStroke.Parent = frame
+			local GlowEffect = Instance.new("ImageLabel")
+			GlowEffect.BackgroundTransparency = 1
+			GlowEffect.Image = "rbxassetid://7331400934"
+			GlowEffect.ImageColor3 = Color3.fromRGB(97, 255, 140)
+			GlowEffect.ImageTransparency = 0.8
+			GlowEffect.Size = UDim2.new(1.2, 0, 1.2, 0)
+			GlowEffect.Position = UDim2.new(-0.1, 0, -0.1, 0)
+			GlowEffect.ZIndex = -1
+			GlowEffect.Parent = Frame
 
-			local title = Instance.new("TextLabel")
-			title.Size = UDim2.new(1, -20, 0, 40)
-			title.Position = UDim2.new(0.5, 0, 0, 10)
-			title.AnchorPoint = Vector2.new(0.5, 0)
-			title.Text = "Script Version Selection"
-			title.TextColor3 = Color3.fromRGB(255, 255, 255)
-			title.BackgroundTransparency = 1
-			title.TextSize = 18
-			title.Font = Enum.Font.GothamBold
-			title.Parent = frame
+			local TitleLabel = Instance.new("TextLabel")
+			TitleLabel.Size = UDim2.new(1, -20, 0, 25)
+			TitleLabel.Position = UDim2.new(0, 10, 0, 10)
+			TitleLabel.Text = title
+			TitleLabel.TextColor3 = Color3.fromRGB(97, 255, 140)
+			TitleLabel.BackgroundTransparency = 1
+			TitleLabel.TextSize = 16
+			TitleLabel.Font = Enum.Font.GothamBold
+			TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+			TitleLabel.Parent = Frame
 
-			local message = Instance.new("TextLabel")
-			message.Size = UDim2.new(1, -20, 0, 30)
-			message.Position = UDim2.new(0.5, 0, 0, 50)
-			message.AnchorPoint = Vector2.new(0.5, 0)
-			message.Text = "Select which script version to load:"
-			message.TextColor3 = Color3.fromRGB(200, 200, 200)
-			message.BackgroundTransparency = 1
-			message.TextSize = 14
-			message.Font = Enum.Font.Gotham
-			message.Parent = frame
+			local MessageLabel = Instance.new("TextLabel")
+			MessageLabel.Size = UDim2.new(1, -20, 0, 35)
+			MessageLabel.Position = UDim2.new(0, 10, 0, 35)
+			MessageLabel.Text = message
+			MessageLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+			MessageLabel.BackgroundTransparency = 1
+			MessageLabel.TextSize = 14
+			MessageLabel.Font = Enum.Font.Gotham
+			MessageLabel.TextXAlignment = Enum.TextXAlignment.Left
+			MessageLabel.TextWrapped = true
+			MessageLabel.Parent = Frame
 
-			local buttonsFrame = Instance.new("Frame")
-			buttonsFrame.Size = UDim2.new(1, -40, 0, 50)
-			buttonsFrame.Position = UDim2.new(0.5, 0, 1, -70)
-			buttonsFrame.AnchorPoint = Vector2.new(0.5, 0)
-			buttonsFrame.BackgroundTransparency = 1
-			buttonsFrame.Parent = frame
+			Frame.Position = UDim2.new(1, 20, 0, 20 + (NotificationeIndexirus * 90))
+			Frame:TweenPosition(UDim2.new(1, -290, 0, 20 + (NotificationeIndexirus * 90)), "Out", "Quad", 0.5)
 
-			local layout = Instance.new("UIListLayout")
-			layout.FillDirection = Enum.FillDirection.Horizontal
-			layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-			layout.VerticalAlignment = Enum.VerticalAlignment.Center
-			layout.Padding = UDim.new(0, 20)
-			layout.Parent = buttonsFrame
-
-			local function createButton(text, color, scriptId)
-				local button = Instance.new("TextButton")
-				button.Size = UDim2.new(0.45, 0, 0, 40)
-				button.Text = text
-				button.BackgroundColor3 = color
-				button.TextColor3 = Color3.fromRGB(255, 255, 255)
-				button.BorderSizePixel = 0
-				button.Font = Enum.Font.GothamBold
-				button.TextSize = 16
-				button.Parent = buttonsFrame
-				button.AutoButtonColor = false
-
-				local UICornerButton = Instance.new("UICorner")
-				UICornerButton.CornerRadius = UDim.new(0, 6)
-				UICornerButton.Parent = button
-
-				local hoverColor =
-					Color3.new(math.min(color.R * 1.2, 1), math.min(color.G * 1.2, 1), math.min(color.B * 1.2, 1))
-
-				button.MouseEnter:Connect(function()
-					game:GetService("TweenService")
-						:Create(button, TweenInfo.new(0.2), { BackgroundColor3 = hoverColor })
-						:Play()
+			task.delay(duration, function()
+				Frame:TweenPosition(UDim2.new(1, 20, 0, 20 + (NotificationeIndexirus * 90)), "Out", "Quad", 0.5)
+				task.delay(0.5, function()
+					ScreenGui:Destroy()
+					Notificationes = Notificationes - 1
 				end)
+			end)
 
-				button.MouseLeave:Connect(function()
-					game:GetService("TweenService")
-						:Create(button, TweenInfo.new(0.2), { BackgroundColor3 = color })
-						:Play()
-				end)
-
-				button.Activated:Connect(function()
-					api.script_id = scriptId
-					selectionGui:Destroy()
-					ApiStatusCode = "KEY_VALID"
-				end)
-
-				return button
-			end
-
-			local oldScriptId = "d0a352d474c8c4107c512d2421582c1c"
-			local newScriptId = "ed420b2ef0304c876277e626fef234c6"
-
-			createButton("Old Version", Color3.fromRGB(80, 100, 180), oldScriptId)
-			createButton("New Version", Color3.fromRGB(80, 180, 100), newScriptId)
+			return ScreenGui
 		end
 
-		ApiStatusCode = "WAITING_FOR_SELECTION"
-
-		showScriptSelectionPopup()
+		MakeNotificatione("Welcome", "Script access valid! Loading script...", 3)
+		task.delay(0.5, function()
+			local timeLeftSecs = status.data.auth_expire - os.time()
+			local hours = math.floor(timeLeftSecs / 3600)
+			local minutes = math.floor((timeLeftSecs % 3600) / 60)
+			MakeNotificatione("Subscription Info", "Time left: " .. hours .. "h " .. minutes .. "m", 4)
+		end)
+		task.delay(1, function()
+			MakeNotificatione("Usage Stats", "Total executions: " .. status.data.total_executions, 4)
+		end)
 	else
 		print(STATUS_MESSAGES[status.code] or status.message)
 		makeUI()
-	end	
+	end
 else
 	makeUI()
 end
@@ -438,7 +765,5 @@ end
 while ApiStatusCode ~= "KEY_VALID" do
 	task.wait(0.1)
 end
-
 script_key = sigmakey
 api.load_script()
--- Chatgpt generated ui im not doing allat thx
