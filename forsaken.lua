@@ -7,6 +7,7 @@ api.script_id = "d0a352d474c8c4107c512d2421582c1c"
 local sigmakey
 local KeyCheckingButtonSex
 local ApiStatusCode
+local LopticaKey = ""
 local KEY_FILE = "fartkey.txt"
 local STATUS_MESSAGES = {
 	KEY_VALID = "Key valid! Loading script...",
@@ -765,5 +766,123 @@ end
 while ApiStatusCode ~= "KEY_VALID" do
 	task.wait(0.1)
 end
-script_key = sigmakey
+
+local function makeScriptPickerUI()
+	local scringui = Instance.new("ScreenGui")
+	scringui.Name = "ScriptPicker"
+	scringui.Parent = game.CoreGui
+
+	local blurEffect = Instance.new("BlurEffect")
+	blurEffect.Size = 0
+	blurEffect.Name = "ScriptPickerBlur"
+	blurEffect.Parent = game:GetService("Lighting")
+
+	local Frame = Instance.new("Frame")
+	Frame.Size = UDim2.new(0, 0, 0, 0)
+	Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	Frame.BackgroundColor3 = Color3.fromRGB(30, 35, 30)
+	Frame.BorderSizePixel = 0
+	Frame.Parent = scringui
+
+	local UICorner = Instance.new("UICorner")
+	UICorner.CornerRadius = UDim.new(0, 8)
+	UICorner.Parent = Frame
+
+	local UIStroke = Instance.new("UIStroke")
+	UIStroke.Color = Color3.fromRGB(97, 255, 140)
+	UIStroke.Thickness = 2
+	UIStroke.Parent = Frame
+
+	local Title = Instance.new("TextLabel")
+	Title.Size = UDim2.new(1, 0, 0, 40)
+	Title.Position = UDim2.new(0, 0, 0, 10)
+	Title.Text = "Select Script Version"
+	Title.TextColor3 = Color3.fromRGB(97, 255, 140)
+	Title.BackgroundTransparency = 1
+	Title.TextSize = 20
+	Title.Font = Enum.Font.GothamBold
+	Title.Parent = Frame
+
+	local ButtonsContainer = Instance.new("Frame")
+	ButtonsContainer.Size = UDim2.new(0.9, 0, 0, 100)
+	ButtonsContainer.Position = UDim2.new(0.5, 0, 0.5, 10)
+	ButtonsContainer.AnchorPoint = Vector2.new(0.5, 0)
+	ButtonsContainer.BackgroundTransparency = 1
+	ButtonsContainer.Parent = Frame
+
+	local function MakeButton(text, color)
+		local Button = Instance.new("TextButton")
+		Button.Size = UDim2.new(0.8, 0, 0, 40)
+		Button.Position = UDim2.new(0.5, 0, 0.5, 0)
+		Button.AnchorPoint = Vector2.new(0.5, 0.5)
+		Button.Text = text
+		Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Button.BackgroundColor3 = color
+		Button.TextSize = 16
+		Button.Font = Enum.Font.GothamBold
+		Button.Parent = ButtonsContainer
+		Button.AutoButtonColor = false
+
+		local ButtonCorner = Instance.new("UICorner")
+		ButtonCorner.CornerRadius = UDim.new(0, 6)
+		ButtonCorner.Parent = Button
+
+		Button.MouseEnter:Connect(function()
+			game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), {
+				BackgroundColor3 = Color3.fromRGB(
+					math.min(color.R * 255 + 20, 255),
+					math.min(color.G * 255 + 20, 255),
+					math.min(color.B * 255 + 20, 255)
+				)
+			}):Play()
+		end)
+
+		Button.MouseLeave:Connect(function()
+			game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), {
+				BackgroundColor3 = color
+			}):Play()
+		end)
+
+		return Button
+	end
+
+	local OldScript = MakeButton("Old Script", Color3.fromRGB(60, 65, 60))
+	OldScript.Position = UDim2.new(0.5, 0, 0, 10)
+
+	local NewScript = MakeButton("New Script", Color3.fromRGB(80, 180, 100))
+	NewScript.Position = UDim2.new(0.5, 0, 0, 60)
+
+	OldScript.Activated:Connect(function()
+		LopticaKey = "d0a352d474c8c4107c512d2421582c1c"
+		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
+		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
+			scringui:Destroy()
+			blurEffect:Destroy()
+		end)
+	end)
+
+	NewScript.Activated:Connect(function()
+		LopticaKey = "ed420b2ef0304c876277e626fef234c6"
+		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
+		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
+			scringui:Destroy()
+			blurEffect:Destroy()
+		end)
+	end)
+
+	game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 10}):Play()
+	Frame:TweenSize(UDim2.new(0, 300, 0, 180), "Out", "Back", 0.5, true)
+
+	return scringui
+end
+
+makeScriptPickerUI()
+
+while LopticaKey == "" do
+	task.wait(0.1)
+end
+
+script_key = LopticaKey
 api.load_script()
+-- Claude generated UI because im too lazy to make my own and shit thx
