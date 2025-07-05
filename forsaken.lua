@@ -1,7 +1,9 @@
 if string.split(identifyexecutor() or "None", " ")[1] == "Xeno" then
-    getgenv().WebSocket = nil
+	getgenv().WebSocket = nil
 end
 
+local IsKeyless = nil
+local KeylessAllowed = true
 local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
 api.script_id = "d0a352d474c8c4107c512d2421582c1c"
 local sigmakey
@@ -45,6 +47,132 @@ local function CheckiKey(key)
 		return status
 	end
 	return status
+end
+
+local function makeKeylessUI()
+	local scringui = Instance.new("ScreenGui")
+	scringui.Name = "KeylessSelector"
+	scringui.Parent = game.CoreGui
+
+	local blurEffect = Instance.new("BlurEffect")
+	blurEffect.Size = 0
+	blurEffect.Name = "KeylessSelectorBlur"
+	blurEffect.Parent = game:GetService("Lighting")
+
+	local Frame = Instance.new("Frame")
+	Frame.Size = UDim2.new(0, 0, 0, 0)
+	Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	Frame.BackgroundColor3 = Color3.fromRGB(30, 35, 30)
+	Frame.BorderSizePixel = 0
+	Frame.Parent = scringui
+
+	local UICorner = Instance.new("UICorner")
+	UICorner.CornerRadius = UDim.new(0, 8)
+	UICorner.Parent = Frame
+
+	local UIStroke = Instance.new("UIStroke")
+	UIStroke.Color = Color3.fromRGB(97, 255, 140)
+	UIStroke.Thickness = 2
+	UIStroke.Parent = Frame
+
+	local StatusLabel = Instance.new("TextLabel")
+	StatusLabel.Size = UDim2.new(1, 0, 0, 40)
+	StatusLabel.Position = UDim2.new(0, 0, 0, 10)
+	StatusLabel.Text = "Keyless is Active"
+	StatusLabel.TextColor3 = Color3.fromRGB(97, 255, 140)
+	StatusLabel.BackgroundTransparency = 1
+	StatusLabel.TextSize = 18
+	StatusLabel.Font = Enum.Font.GothamBold
+	StatusLabel.Parent = Frame
+
+	local ButtonsContainer = Instance.new("Frame")
+	ButtonsContainer.Size = UDim2.new(0.9, 0, 0, 100)
+	ButtonsContainer.Position = UDim2.new(0.5, 0, 0.5, 10)
+	ButtonsContainer.AnchorPoint = Vector2.new(0.5, 0)
+	ButtonsContainer.BackgroundTransparency = 1
+	ButtonsContainer.Parent = Frame
+
+	local function MakeButton(text, color)
+		local Button = Instance.new("TextButton")
+		Button.Size = UDim2.new(0.8, 0, 0, 40)
+		Button.Position = UDim2.new(0.5, 0, 0.5, 0)
+		Button.AnchorPoint = Vector2.new(0.5, 0.5)
+		Button.Text = text
+		Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Button.BackgroundColor3 = color
+		Button.TextSize = 16
+		Button.Font = Enum.Font.GothamBold
+		Button.Parent = ButtonsContainer
+		Button.AutoButtonColor = false
+
+		local ButtonCorner = Instance.new("UICorner")
+		ButtonCorner.CornerRadius = UDim.new(0, 6)
+		ButtonCorner.Parent = Button
+
+		Button.MouseEnter:Connect(function()
+			game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), {
+				BackgroundColor3 = Color3.fromRGB(
+					math.min(color.R * 255 + 20, 255),
+					math.min(color.G * 255 + 20, 255),
+					math.min(color.B * 255 + 20, 255)
+				)
+			}):Play()
+		end)
+
+		Button.MouseLeave:Connect(function()
+			game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), {
+				BackgroundColor3 = color
+			}):Play()
+		end)
+
+		return Button
+	end
+
+	local KeylessButton = MakeButton("Keyless", Color3.fromRGB(80, 180, 100))
+	KeylessButton.Position = UDim2.new(0.5, 0, 0, 10)
+
+	local KeySystemButton = MakeButton("Key System", Color3.fromRGB(60, 65, 60))
+	KeySystemButton.Position = UDim2.new(0.5, 0, 0, 60)
+
+	KeylessButton.Activated:Connect(function()
+		IsKeyless = true
+		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
+		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
+			scringui:Destroy()
+			blurEffect:Destroy()
+		end)
+	end)
+
+	KeySystemButton.Activated:Connect(function()
+		IsKeyless = false
+		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
+		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
+			scringui:Destroy()
+			blurEffect:Destroy()
+		end)
+		return
+	end)
+
+	game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 10}):Play()
+	Frame:TweenSize(UDim2.new(0, 300, 0, 180), "Out", "Back", 0.5, true)
+
+	return scringui
+end
+
+if KeylessAllowed then
+	makeKeylessUI()
+
+	while IsKeyless == nil do
+		wait(0.1)
+	end
+	if IsKeyless == true then
+		api.script_id = "506e6c8aa20e05d94a3cc4b485ee5441"
+		api.load_script()
+		task.wait(9e9)
+	elseif IsKeyless == false then
+		print("wants to do key system")
+	end
 end
 
 local function makeUI()
@@ -767,6 +895,103 @@ while ApiStatusCode ~= "KEY_VALID" do
 	task.wait(0.1)
 end
 
+local key = LoaderTheKeyPlease()
+if key and key ~= "" then
+	local status = CheckiKey(key)
+	ApiStatusCode = status.code
+	if status.code == "KEY_VALID" then
+		sigmakey = key
+		local Notificationes = 0
+		local function MakeNotificatione(title, message, duration)
+			duration = duration or 3
+
+			local NotificationeIndexirus = Notificationes
+			Notificationes = Notificationes + 1
+
+			local ScreenGui = Instance.new("ScreenGui")
+			ScreenGui.Name = "NotificationUI_" .. NotificationeIndexirus
+			ScreenGui.Parent = game.CoreGui
+
+			local Frame = Instance.new("Frame")
+			Frame.Size = UDim2.new(0, 280, 0, 80)
+			Frame.Position = UDim2.new(1, -290, 0, 20 + (NotificationeIndexirus * 90))
+			Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+			Frame.BorderSizePixel = 0
+			Frame.Parent = ScreenGui
+
+			local UICorner = Instance.new("UICorner")
+			UICorner.CornerRadius = UDim.new(0, 8)
+			UICorner.Parent = Frame
+
+			local GlowEffect = Instance.new("ImageLabel")
+			GlowEffect.BackgroundTransparency = 1
+			GlowEffect.Image = "rbxassetid://7331400934"
+			GlowEffect.ImageColor3 = Color3.fromRGB(97, 255, 140)
+			GlowEffect.ImageTransparency = 0.8
+			GlowEffect.Size = UDim2.new(1.2, 0, 1.2, 0)
+			GlowEffect.Position = UDim2.new(-0.1, 0, -0.1, 0)
+			GlowEffect.ZIndex = -1
+			GlowEffect.Parent = Frame
+
+			local TitleLabel = Instance.new("TextLabel")
+			TitleLabel.Size = UDim2.new(1, -20, 0, 25)
+			TitleLabel.Position = UDim2.new(0, 10, 0, 10)
+			TitleLabel.Text = title
+			TitleLabel.TextColor3 = Color3.fromRGB(97, 255, 140)
+			TitleLabel.BackgroundTransparency = 1
+			TitleLabel.TextSize = 16
+			TitleLabel.Font = Enum.Font.GothamBold
+			TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+			TitleLabel.Parent = Frame
+
+			local MessageLabel = Instance.new("TextLabel")
+			MessageLabel.Size = UDim2.new(1, -20, 0, 35)
+			MessageLabel.Position = UDim2.new(0, 10, 0, 35)
+			MessageLabel.Text = message
+			MessageLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+			MessageLabel.BackgroundTransparency = 1
+			MessageLabel.TextSize = 14
+			MessageLabel.Font = Enum.Font.Gotham
+			MessageLabel.TextXAlignment = Enum.TextXAlignment.Left
+			MessageLabel.TextWrapped = true
+			MessageLabel.Parent = Frame
+
+			Frame.Position = UDim2.new(1, 20, 0, 20 + (NotificationeIndexirus * 90))
+			Frame:TweenPosition(UDim2.new(1, -290, 0, 20 + (NotificationeIndexirus * 90)), "Out", "Quad", 0.5)
+
+			task.delay(duration, function()
+				Frame:TweenPosition(UDim2.new(1, 20, 0, 20 + (NotificationeIndexirus * 90)), "Out", "Quad", 0.5)
+				task.delay(0.5, function()
+					ScreenGui:Destroy()
+					Notificationes = Notificationes - 1
+				end)
+			end)
+
+			return ScreenGui
+		end
+
+		MakeNotificatione("Welcome", "Script access valid! Loading script...", 3)
+		task.delay(0.5, function()
+			local timeLeftSecs = status.data.auth_expire - os.time()
+			local hours = math.floor(timeLeftSecs / 3600)
+			local minutes = math.floor((timeLeftSecs % 3600) / 60)
+			MakeNotificatione("Subscription Info", "Time left: " .. hours .. "h " .. minutes .. "m", 4)
+		end)
+		task.delay(1, function()
+			MakeNotificatione("Usage Stats", "Total executions: " .. status.data.total_executions, 4)
+		end)
+	else
+		print(STATUS_MESSAGES[status.code] or status.message)
+		makeUI()
+	end
+else
+	makeUI()
+end
+
+while ApiStatusCode ~= "KEY_VALID" do
+	task.wait(0.1)
+end
+
 local function makeScriptPickerUI()
 	local scringui = Instance.new("ScreenGui")
 	scringui.Name = "ScriptPicker"
@@ -829,19 +1054,23 @@ local function makeScriptPickerUI()
 		ButtonCorner.Parent = Button
 
 		Button.MouseEnter:Connect(function()
-			game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), {
-				BackgroundColor3 = Color3.fromRGB(
-					math.min(color.R * 255 + 20, 255),
-					math.min(color.G * 255 + 20, 255),
-					math.min(color.B * 255 + 20, 255)
-				)
-			}):Play()
+			game:GetService("TweenService")
+				:Create(Button, TweenInfo.new(0.2), {
+					BackgroundColor3 = Color3.fromRGB(
+						math.min(color.R * 255 + 20, 255),
+						math.min(color.G * 255 + 20, 255),
+						math.min(color.B * 255 + 20, 255)
+					),
+				})
+				:Play()
 		end)
 
 		Button.MouseLeave:Connect(function()
-			game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), {
-				BackgroundColor3 = color
-			}):Play()
+			game:GetService("TweenService")
+				:Create(Button, TweenInfo.new(0.2), {
+					BackgroundColor3 = color,
+				})
+				:Play()
 		end)
 
 		return Button
@@ -855,7 +1084,7 @@ local function makeScriptPickerUI()
 
 	OldScript.Activated:Connect(function()
 		NewScriptId = "d0a352d474c8c4107c512d2421582c1c"
-		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
+		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), { Size = 0 }):Play()
 		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
 			scringui:Destroy()
 			blurEffect:Destroy()
@@ -864,14 +1093,14 @@ local function makeScriptPickerUI()
 
 	NewScript.Activated:Connect(function()
 		NewScriptId = "ed420b2ef0304c876277e626fef234c6"
-		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
+		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), { Size = 0 }):Play()
 		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
 			scringui:Destroy()
 			blurEffect:Destroy()
 		end)
 	end)
 
-	game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 10}):Play()
+	game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), { Size = 10 }):Play()
 	Frame:TweenSize(UDim2.new(0, 300, 0, 180), "Out", "Back", 0.5, true)
 
 	return scringui
