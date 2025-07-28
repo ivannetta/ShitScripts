@@ -530,7 +530,7 @@ local function makeUI()
 			sigmakey = key
 			scringui:Destroy()
 			blurEffect:Destroy()
-
+			ApiStatusCode = "KEY_VALID"
 		else
 			StatusLabel.Text = STATUS_MESSAGES[status.code] or status.message
 			StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
@@ -673,6 +673,7 @@ if key and key ~= "" then
 		task.delay(1, function()
 			MakeNotificatione("Usage Stats", "Total executions: " .. status.data.total_executions, 4)
 		end)
+		ApiStatusCode = "KEY_VALID"
 	else
 		print(STATUS_MESSAGES[status.code] or status.message)
 		makeUI()
