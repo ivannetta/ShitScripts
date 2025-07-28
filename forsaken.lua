@@ -2,12 +2,9 @@ if string.split(identifyexecutor() or "None", " ")[1] == "Xeno" then
 	getgenv().WebSocket = nil
 end
 
-local IsKeyless = nil
-local KeylessAllowed = false
 local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
-api.script_id = "d0a352d474c8c4107c512d2421582c1c"
+api.script_id = "ed420b2ef0304c876277e626fef234c6"
 local sigmakey
-local NewScriptId = ""
 local KeyCheckingButtonSex
 local ApiStatusCode
 local KEY_FILE = "fartkey.txt"
@@ -49,132 +46,6 @@ local function CheckiKey(key)
 	return status
 end
 
-local function makeKeylessUI()
-	local scringui = Instance.new("ScreenGui")
-	scringui.Name = "KeylessSelector"
-	scringui.Parent = game.CoreGui
-
-	local blurEffect = Instance.new("BlurEffect")
-	blurEffect.Size = 0
-	blurEffect.Name = "KeylessSelectorBlur"
-	blurEffect.Parent = game:GetService("Lighting")
-
-	local Frame = Instance.new("Frame")
-	Frame.Size = UDim2.new(0, 0, 0, 0)
-	Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
-	Frame.BackgroundColor3 = Color3.fromRGB(30, 35, 30)
-	Frame.BorderSizePixel = 0
-	Frame.Parent = scringui
-
-	local UICorner = Instance.new("UICorner")
-	UICorner.CornerRadius = UDim.new(0, 8)
-	UICorner.Parent = Frame
-
-	local UIStroke = Instance.new("UIStroke")
-	UIStroke.Color = Color3.fromRGB(97, 255, 140)
-	UIStroke.Thickness = 2
-	UIStroke.Parent = Frame
-
-	local StatusLabel = Instance.new("TextLabel")
-	StatusLabel.Size = UDim2.new(1, 0, 0, 40)
-	StatusLabel.Position = UDim2.new(0, 0, 0, 10)
-	StatusLabel.Text = "Keyless is Active"
-	StatusLabel.TextColor3 = Color3.fromRGB(97, 255, 140)
-	StatusLabel.BackgroundTransparency = 1
-	StatusLabel.TextSize = 18
-	StatusLabel.Font = Enum.Font.GothamBold
-	StatusLabel.Parent = Frame
-
-	local ButtonsContainer = Instance.new("Frame")
-	ButtonsContainer.Size = UDim2.new(0.9, 0, 0, 100)
-	ButtonsContainer.Position = UDim2.new(0.5, 0, 0.5, 10)
-	ButtonsContainer.AnchorPoint = Vector2.new(0.5, 0)
-	ButtonsContainer.BackgroundTransparency = 1
-	ButtonsContainer.Parent = Frame
-
-	local function MakeButton(text, color)
-		local Button = Instance.new("TextButton")
-		Button.Size = UDim2.new(0.8, 0, 0, 40)
-		Button.Position = UDim2.new(0.5, 0, 0.5, 0)
-		Button.AnchorPoint = Vector2.new(0.5, 0.5)
-		Button.Text = text
-		Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-		Button.BackgroundColor3 = color
-		Button.TextSize = 16
-		Button.Font = Enum.Font.GothamBold
-		Button.Parent = ButtonsContainer
-		Button.AutoButtonColor = false
-
-		local ButtonCorner = Instance.new("UICorner")
-		ButtonCorner.CornerRadius = UDim.new(0, 6)
-		ButtonCorner.Parent = Button
-
-		Button.MouseEnter:Connect(function()
-			game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), {
-				BackgroundColor3 = Color3.fromRGB(
-					math.min(color.R * 255 + 20, 255),
-					math.min(color.G * 255 + 20, 255),
-					math.min(color.B * 255 + 20, 255)
-				)
-			}):Play()
-		end)
-
-		Button.MouseLeave:Connect(function()
-			game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), {
-				BackgroundColor3 = color
-			}):Play()
-		end)
-
-		return Button
-	end
-
-	local KeylessButton = MakeButton("Keyless", Color3.fromRGB(80, 180, 100))
-	KeylessButton.Position = UDim2.new(0.5, 0, 0, 10)
-
-	local KeySystemButton = MakeButton("Key System", Color3.fromRGB(60, 65, 60))
-	KeySystemButton.Position = UDim2.new(0.5, 0, 0, 60)
-
-	KeylessButton.Activated:Connect(function()
-		IsKeyless = true
-		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
-		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
-			scringui:Destroy()
-			blurEffect:Destroy()
-		end)
-	end)
-
-	KeySystemButton.Activated:Connect(function()
-		IsKeyless = false
-		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
-		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
-			scringui:Destroy()
-			blurEffect:Destroy()
-		end)
-		return
-	end)
-
-	game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), {Size = 10}):Play()
-	Frame:TweenSize(UDim2.new(0, 300, 0, 180), "Out", "Back", 0.5, true)
-
-	return scringui
-end
-
-if KeylessAllowed then
-	makeKeylessUI()
-
-	while IsKeyless == nil do
-		wait(0.1)
-	end
-	if IsKeyless == true then
-		api.script_id = "506e6c8aa20e05d94a3cc4b485ee5441"
-		api.load_script()
-		task.wait(9e9)
-	elseif IsKeyless == false then
-		print("wants to do key system")
-	end
-end
-
 local function makeUI()
 	local scringui = Instance.new("ScreenGui")
 	scringui.Name = "KeySystem"
@@ -195,7 +66,7 @@ local function makeUI()
 
 	local Frame = Instance.new("Frame")
 	Frame.Size = UDim2.new(0, 0, 0, 0)
-	Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Frame.Position = UDim2.new(0.5, 0, 0.35, 0)
 	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
 	Frame.BackgroundColor3 = Color3.fromRGB(30, 35, 30)
 	Frame.BorderSizePixel = 0
@@ -415,17 +286,21 @@ local function makeUI()
 	GetFartButton.Activated:Connect(function()
 		GetFartButton.Active = false
 		GetFartButton.AutoButtonColor = false
-		game:GetService("TweenService"):Create(
-			GetFartButton,
-			TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
-			{ Size = UDim2.new(0, 100, 0, 35), BackgroundTransparency = 0.5 }
-		):Play()
+		game:GetService("TweenService")
+			:Create(
+				GetFartButton,
+				TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+				{ Size = UDim2.new(0, 100, 0, 35), BackgroundTransparency = 0.5 }
+			)
+			:Play()
 
-		game:GetService("TweenService"):Create(
-			GetFartButton,
-			TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-			{ Size = UDim2.new(0, 0, 0, 35), Position = UDim2.new(-0.2, 0, 0, 0) }
-		):Play()
+		game:GetService("TweenService")
+			:Create(
+				GetFartButton,
+				TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+				{ Size = UDim2.new(0, 0, 0, 35), Position = UDim2.new(-0.2, 0, 0, 0) }
+			)
+			:Play()
 
 		local text = GetFartButton.Text
 		local len = string.len(text)
@@ -476,11 +351,13 @@ local function makeUI()
 		ProvidersList.Padding = UDim.new(0, 10)
 		ProvidersList.Parent = ProvidersContainer
 
-		game:GetService("TweenService"):Create(
-			KeyProvidersPanel,
-			TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-			{Size = UDim2.new(1, 0, 0, 80)}
-		):Play()
+		game:GetService("TweenService")
+			:Create(
+				KeyProvidersPanel,
+				TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+				{ Size = UDim2.new(1, 0, 0, 80) }
+			)
+			:Play()
 
 		local PanelGlow = Instance.new("ImageLabel")
 		PanelGlow.BackgroundTransparency = 1
@@ -492,11 +369,7 @@ local function makeUI()
 		PanelGlow.ZIndex = 19
 		PanelGlow.Parent = KeyProvidersPanel
 
-		game:GetService("TweenService"):Create(
-			PanelGlow,
-			TweenInfo.new(0.8),
-			{ImageTransparency = 0.9}
-		):Play()
+		game:GetService("TweenService"):Create(PanelGlow, TweenInfo.new(0.8), { ImageTransparency = 0.9 }):Play()
 
 		local function MakeKeyProviderButton(text, icon, color, hoverColor)
 			local Button = Instance.new("Frame")
@@ -514,11 +387,14 @@ local function makeUI()
 			Gradient.Rotation = 90
 			Gradient.Color = ColorSequence.new({
 				ColorSequenceKeypoint.new(0, color),
-				ColorSequenceKeypoint.new(1, Color3.fromRGB(
-					math.clamp(color.R * 0.8, 0, 1) * 255,
-					math.clamp(color.G * 0.8, 0, 1) * 255,
-					math.clamp(color.B * 0.8, 0, 1) * 255
-				))
+				ColorSequenceKeypoint.new(
+					1,
+					Color3.fromRGB(
+						math.clamp(color.R * 0.8, 0, 1) * 255,
+						math.clamp(color.G * 0.8, 0, 1) * 255,
+						math.clamp(color.B * 0.8, 0, 1) * 255
+					)
+				),
 			})
 			Gradient.Parent = Button
 
@@ -561,31 +437,29 @@ local function makeUI()
 			GlowyButtonThing.Parent = Button
 
 			ButtonForgot.MouseEnter:Connect(function()
-				game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), { BackgroundColor3 = hoverColor }):Play()
-				game:GetService("TweenService"):Create(GlowyButtonThing, TweenInfo.new(0.2), { ImageTransparency = 0.7 }):Play()
+				game:GetService("TweenService")
+					:Create(Button, TweenInfo.new(0.2), { BackgroundColor3 = hoverColor })
+					:Play()
+				game:GetService("TweenService")
+					:Create(GlowyButtonThing, TweenInfo.new(0.2), { ImageTransparency = 0.7 })
+					:Play()
 			end)
 
 			ButtonForgot.MouseLeave:Connect(function()
 				game:GetService("TweenService"):Create(Button, TweenInfo.new(0.2), { BackgroundColor3 = color }):Play()
-				game:GetService("TweenService"):Create(GlowyButtonThing, TweenInfo.new(0.2), { ImageTransparency = 1 }):Play()
+				game:GetService("TweenService")
+					:Create(GlowyButtonThing, TweenInfo.new(0.2), { ImageTransparency = 1 })
+					:Play()
 			end)
 
 			return ButtonForgot
 		end
 
-		local Lootlibs = MakeKeyProviderButton(
-			"LootLabs",
-			"89429366953434",
-			Color3.fromRGB(60, 65, 60),
-			Color3.fromRGB(80, 85, 80)
-		)
+		local Lootlibs =
+			MakeKeyProviderButton("LootLabs", "89429366953434", Color3.fromRGB(60, 65, 60), Color3.fromRGB(80, 85, 80))
 
-		local Workinky = MakeKeyProviderButton(
-			"WorKink",
-			"80731952209461",
-			Color3.fromRGB(60, 65, 60),
-			Color3.fromRGB(80, 85, 80)
-		)
+		local Workinky =
+			MakeKeyProviderButton("WorKink", "80731952209461", Color3.fromRGB(60, 65, 60), Color3.fromRGB(80, 85, 80))
 
 		local Linkvertis = MakeKeyProviderButton(
 			"Linkvertise",
@@ -608,15 +482,17 @@ local function makeUI()
 				particleCorner.CornerRadius = UDim.new(1, 0)
 				particleCorner.Parent = PARTICL
 
-				game:GetService("TweenService"):Create(
-					PARTICL, 
-					TweenInfo.new(0.5),
-					{
+				game:GetService("TweenService")
+					:Create(PARTICL, TweenInfo.new(0.5), {
 						BackgroundTransparency = 1,
-						Position = UDim2.new(PARTICL.Position.X.Scale, PARTICL.Position.X.Offset, 
-											PARTICL.Position.Y.Scale - 0.3, PARTICL.Position.Y.Offset)
-					}
-				):Play()
+						Position = UDim2.new(
+							PARTICL.Position.X.Scale,
+							PARTICL.Position.X.Offset,
+							PARTICL.Position.Y.Scale - 0.3,
+							PARTICL.Position.Y.Offset
+						),
+					})
+					:Play()
 
 				game:GetService("Debris"):AddItem(PARTICL, 0.5)
 			end
@@ -641,92 +517,6 @@ local function makeUI()
 		end)
 	end)
 
-	local function BESTLOADINGANIMATIONNOTFAKE()
-		TextBox.Visible = false
-		StatusLabel.Visible = false
-		ButtonsFrame.Visible = false
-
-		LoadingBarContainer.Visible = true
-		LoadingText.Visible = true
-
-		LoadingText.Text = "Validating key..."
-
-		local startTime = tick()
-		local duration = 1.5
-		local connection
-
-		connection = game:GetService("RunService").RenderStepped:Connect(function()
-			local elapsed = tick() - startTime
-			local progress = math.min(elapsed / duration, 1)
-
-			local easedProgress = 1 - (1 - progress) ^ 3
-
-			LoadingBarFill.Size = UDim2.new(easedProgress, 0, 1, 0)
-
-			if progress < 0.3 then
-				LoadingText.Text = "Checking key..."
-			elseif progress < 0.6 then
-				LoadingText.Text = "Authenticating..."
-			elseif progress < 0.9 then
-				LoadingText.Text = "This totaly does something..."
-			else
-				LoadingText.Text = "Authenticated."
-			end
-
-			if math.random() < 0.1 and progress > 0.5 then
-				local particle = Instance.new("Frame")
-				particle.BackgroundColor3 = Color3.fromRGB(97, 255, 140)
-				particle.BackgroundTransparency = 0.7
-				particle.Size = UDim2.new(0, math.random(2, 4), 0, math.random(2, 4))
-				particle.Position =
-					UDim2.new(easedProgress * math.random(80, 100) / 100, 0, math.random(-10, 10) / 10, 0)
-				particle.ZIndex = 14
-				particle.Parent = LoadingBarContainer
-
-				local particleCorner = Instance.new("UICorner")
-				particleCorner.CornerRadius = UDim.new(1, 0)
-				particleCorner.Parent = particle
-
-				game:GetService("TweenService")
-					:Create(particle, TweenInfo.new(0.5), {
-						BackgroundTransparency = 1,
-						Position = UDim2.new(particle.Position.X.Scale, 0, particle.Position.Y.Scale - 0.3, 0),
-					})
-					:Play()
-
-				game:GetService("Debris"):AddItem(particle, 0.5)
-			end
-
-			if progress >= 1 then
-				connection:Disconnect()
-
-				game:GetService("TweenService")
-					:Create(
-						LoadingBarFill,
-						TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-						{ BackgroundColor3 = Color3.fromRGB(170, 255, 200) }
-					)
-					:Play()
-
-				task.delay(0.3, function()
-					game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), { Size = 0 }):Play()
-
-					local closeTween = game:GetService("TweenService"):Create(
-						Frame,
-						TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
-						{ Size = UDim2.new(0, 0, 0, 0) }
-					)
-					closeTween:Play()
-
-					closeTween.Completed:Connect(function()
-						blurEffect:Destroy()
-						scringui:Destroy()
-					end)
-				end)
-			end
-		end)
-	end
-
 	KeyCheckingButtonSex = MakeSigmaButton("Check Key", Color3.fromRGB(80, 180, 100), Color3.fromRGB(100, 200, 120))
 	KeyCheckingButtonSex.Activated:Connect(function()
 		local key = TextBox.Text:gsub("%s+", "")
@@ -738,9 +528,9 @@ local function makeUI()
 			StatusLabel.Text = STATUS_MESSAGES.KEY_VALID
 			StatusLabel.TextColor3 = Color3.fromRGB(97, 255, 140)
 			sigmakey = key
-			ApiStatusCode = status.code
+			scringui:Destroy()
+			blurEffect:Destroy()
 
-			BESTLOADINGANIMATIONNOTFAKE()
 		else
 			StatusLabel.Text = STATUS_MESSAGES[status.code] or status.message
 			StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
@@ -892,229 +682,13 @@ else
 end
 
 while ApiStatusCode ~= "KEY_VALID" do
-	task.wait(0.1)
+	print("Waiting for key validation... smh")
+	task.wait(1)
 end
 
-local key = LoaderTheKeyPlease()
-if key and key ~= "" then
-	local status = CheckiKey(key)
-	ApiStatusCode = status.code
-	if status.code == "KEY_VALID" then
-		sigmakey = key
-		local Notificationes = 0
-		local function MakeNotificatione(title, message, duration)
-			duration = duration or 3
-
-			local NotificationeIndexirus = Notificationes
-			Notificationes = Notificationes + 1
-
-			local ScreenGui = Instance.new("ScreenGui")
-			ScreenGui.Name = "NotificationUI_" .. NotificationeIndexirus
-			ScreenGui.Parent = game.CoreGui
-
-			local Frame = Instance.new("Frame")
-			Frame.Size = UDim2.new(0, 280, 0, 80)
-			Frame.Position = UDim2.new(1, -290, 0, 20 + (NotificationeIndexirus * 90))
-			Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-			Frame.BorderSizePixel = 0
-			Frame.Parent = ScreenGui
-
-			local UICorner = Instance.new("UICorner")
-			UICorner.CornerRadius = UDim.new(0, 8)
-			UICorner.Parent = Frame
-
-			local GlowEffect = Instance.new("ImageLabel")
-			GlowEffect.BackgroundTransparency = 1
-			GlowEffect.Image = "rbxassetid://7331400934"
-			GlowEffect.ImageColor3 = Color3.fromRGB(97, 255, 140)
-			GlowEffect.ImageTransparency = 0.8
-			GlowEffect.Size = UDim2.new(1.2, 0, 1.2, 0)
-			GlowEffect.Position = UDim2.new(-0.1, 0, -0.1, 0)
-			GlowEffect.ZIndex = -1
-			GlowEffect.Parent = Frame
-
-			local TitleLabel = Instance.new("TextLabel")
-			TitleLabel.Size = UDim2.new(1, -20, 0, 25)
-			TitleLabel.Position = UDim2.new(0, 10, 0, 10)
-			TitleLabel.Text = title
-			TitleLabel.TextColor3 = Color3.fromRGB(97, 255, 140)
-			TitleLabel.BackgroundTransparency = 1
-			TitleLabel.TextSize = 16
-			TitleLabel.Font = Enum.Font.GothamBold
-			TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-			TitleLabel.Parent = Frame
-
-			local MessageLabel = Instance.new("TextLabel")
-			MessageLabel.Size = UDim2.new(1, -20, 0, 35)
-			MessageLabel.Position = UDim2.new(0, 10, 0, 35)
-			MessageLabel.Text = message
-			MessageLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-			MessageLabel.BackgroundTransparency = 1
-			MessageLabel.TextSize = 14
-			MessageLabel.Font = Enum.Font.Gotham
-			MessageLabel.TextXAlignment = Enum.TextXAlignment.Left
-			MessageLabel.TextWrapped = true
-			MessageLabel.Parent = Frame
-
-			Frame.Position = UDim2.new(1, 20, 0, 20 + (NotificationeIndexirus * 90))
-			Frame:TweenPosition(UDim2.new(1, -290, 0, 20 + (NotificationeIndexirus * 90)), "Out", "Quad", 0.5)
-
-			task.delay(duration, function()
-				Frame:TweenPosition(UDim2.new(1, 20, 0, 20 + (NotificationeIndexirus * 90)), "Out", "Quad", 0.5)
-				task.delay(0.5, function()
-					ScreenGui:Destroy()
-					Notificationes = Notificationes - 1
-				end)
-			end)
-
-			return ScreenGui
-		end
-
-		MakeNotificatione("Welcome", "Script access valid! Loading script...", 3)
-		task.delay(0.5, function()
-			local timeLeftSecs = status.data.auth_expire - os.time()
-			local hours = math.floor(timeLeftSecs / 3600)
-			local minutes = math.floor((timeLeftSecs % 3600) / 60)
-			MakeNotificatione("Subscription Info", "Time left: " .. hours .. "h " .. minutes .. "m", 4)
-		end)
-		task.delay(1, function()
-			MakeNotificatione("Usage Stats", "Total executions: " .. status.data.total_executions, 4)
-		end)
-	else
-		print(STATUS_MESSAGES[status.code] or status.message)
-		makeUI()
-	end
-else
-	makeUI()
-end
-
-while ApiStatusCode ~= "KEY_VALID" do
-	task.wait(0.1)
-end
-
-local function makeScriptPickerUI()
-	local scringui = Instance.new("ScreenGui")
-	scringui.Name = "ScriptPicker"
-	scringui.Parent = game.CoreGui
-
-	local blurEffect = Instance.new("BlurEffect")
-	blurEffect.Size = 0
-	blurEffect.Name = "ScriptPickerBlur"
-	blurEffect.Parent = game:GetService("Lighting")
-
-	local Frame = Instance.new("Frame")
-	Frame.Size = UDim2.new(0, 0, 0, 0)
-	Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
-	Frame.BackgroundColor3 = Color3.fromRGB(30, 35, 30)
-	Frame.BorderSizePixel = 0
-	Frame.Parent = scringui
-
-	local UICorner = Instance.new("UICorner")
-	UICorner.CornerRadius = UDim.new(0, 8)
-	UICorner.Parent = Frame
-
-	local UIStroke = Instance.new("UIStroke")
-	UIStroke.Color = Color3.fromRGB(97, 255, 140)
-	UIStroke.Thickness = 2
-	UIStroke.Parent = Frame
-
-	local Title = Instance.new("TextLabel")
-	Title.Size = UDim2.new(1, 0, 0, 40)
-	Title.Position = UDim2.new(0, 0, 0, 10)
-	Title.Text = "Select Script Version"
-	Title.TextColor3 = Color3.fromRGB(97, 255, 140)
-	Title.BackgroundTransparency = 1
-	Title.TextSize = 20
-	Title.Font = Enum.Font.GothamBold
-	Title.Parent = Frame
-
-	local ButtonsContainer = Instance.new("Frame")
-	ButtonsContainer.Size = UDim2.new(0.9, 0, 0, 100)
-	ButtonsContainer.Position = UDim2.new(0.5, 0, 0.5, 10)
-	ButtonsContainer.AnchorPoint = Vector2.new(0.5, 0)
-	ButtonsContainer.BackgroundTransparency = 1
-	ButtonsContainer.Parent = Frame
-
-	local function MakeButton(text, color)
-		local Button = Instance.new("TextButton")
-		Button.Size = UDim2.new(0.8, 0, 0, 40)
-		Button.Position = UDim2.new(0.5, 0, 0.5, 0)
-		Button.AnchorPoint = Vector2.new(0.5, 0.5)
-		Button.Text = text
-		Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-		Button.BackgroundColor3 = color
-		Button.TextSize = 16
-		Button.Font = Enum.Font.GothamBold
-		Button.Parent = ButtonsContainer
-		Button.AutoButtonColor = false
-
-		local ButtonCorner = Instance.new("UICorner")
-		ButtonCorner.CornerRadius = UDim.new(0, 6)
-		ButtonCorner.Parent = Button
-
-		Button.MouseEnter:Connect(function()
-			game:GetService("TweenService")
-				:Create(Button, TweenInfo.new(0.2), {
-					BackgroundColor3 = Color3.fromRGB(
-						math.min(color.R * 255 + 20, 255),
-						math.min(color.G * 255 + 20, 255),
-						math.min(color.B * 255 + 20, 255)
-					),
-				})
-				:Play()
-		end)
-
-		Button.MouseLeave:Connect(function()
-			game:GetService("TweenService")
-				:Create(Button, TweenInfo.new(0.2), {
-					BackgroundColor3 = color,
-				})
-				:Play()
-		end)
-
-		return Button
-	end
-
-	local OldScript = MakeButton("Old Script", Color3.fromRGB(60, 65, 60))
-	OldScript.Position = UDim2.new(0.5, 0, 0, 10)
-
-	local NewScript = MakeButton("New Script", Color3.fromRGB(80, 180, 100))
-	NewScript.Position = UDim2.new(0.5, 0, 0, 60)
-
-	OldScript.Activated:Connect(function()
-		NewScriptId = "d0a352d474c8c4107c512d2421582c1c"
-		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), { Size = 0 }):Play()
-		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
-			scringui:Destroy()
-			blurEffect:Destroy()
-		end)
-	end)
-
-	NewScript.Activated:Connect(function()
-		NewScriptId = "ed420b2ef0304c876277e626fef234c6"
-		game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), { Size = 0 }):Play()
-		Frame:TweenSize(UDim2.new(0, 0, 0, 0), "In", "Back", 0.3, true, function()
-			scringui:Destroy()
-			blurEffect:Destroy()
-		end)
-	end)
-
-	game:GetService("TweenService"):Create(blurEffect, TweenInfo.new(0.3), { Size = 10 }):Play()
-	Frame:TweenSize(UDim2.new(0, 300, 0, 180), "Out", "Back", 0.5, true)
-
-	return scringui
-end
-
-makeScriptPickerUI()
-
-while NewScriptId == "" do
-	task.wait(0.1)
-end
-
-print("Selected Script ID: " .. NewScriptId)
+print("loadingscript on god")
 
 script_key = sigmakey
-api.script_id = NewScriptId
 api.load_script()
+print("Script loaded successfully with key: " .. script_key)
 -- Claude generated UI because im too lazy to make my own and shit thx
