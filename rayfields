@@ -3276,6 +3276,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 
 			function ColorPickerSettings:Set(RGBColor)
 				ColorPickerSettings.Color = RGBColor
+				ColorPickerSettings.Callback(ColorPickerSettings.Color)
 				h, s, v = ColorPickerSettings.Color:ToHSV()
 				color = Color3.fromHSV(h, s, v)
 				setDisplay()
@@ -3308,8 +3309,6 @@ function RayfieldLibrary:CreateWindow(Settings)
 				ColorPicker.HexInput.BackgroundColor3 = SelectedTheme.InputBackground
 				ColorPicker.HexInput.UIStroke.Color = SelectedTheme.InputStroke
 			end)
-
-            ColorPickerSettings.Callback(ColorPickerSettings.Color)
 
 			return ColorPickerSettings
 		end
