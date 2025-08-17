@@ -505,13 +505,13 @@ local function makeUI()
 		end)
 
 		Workinky.Activated:Connect(function()
-			setclipboard("https://ads.luarmor.net/get_key?for=work-JWCiabiNjubp")
+			setclipboard("https://linkunlocker.com/fartsaken-key-luarmor-linkvertise-SNGKc")
 			StatusLabel.Text = "Link Copied!"
 			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Workinky.Parent)
 		end)
 
 		Linkvertis.Activated:Connect(function()
-			setclipboard("https://ads.luarmor.net/get_key?for=Linkvertise_Fartsaken-ajeZDbKyhQVj")
+			setclipboard("https://linkunlocker.com/fartsaken-key-ZMdSg")
 			StatusLabel.Text = "Link Copied!"
 			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Linkvertis.Parent)
 		end)
