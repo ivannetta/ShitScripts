@@ -456,7 +456,7 @@ local function makeUI()
 		end
 
 		local Lootlibs =
-			MakeKeyProviderButton("LootLabs", "89429366953434", Color3.fromRGB(60, 65, 60), Color3.fromRGB(80, 85, 80))
+			MakeKeyProviderButton("1$ Key", "8150337440", Color3.fromRGB(60, 65, 60), Color3.fromRGB(80, 85, 80))
 
 		local Workinky =
 			MakeKeyProviderButton("WorKink", "80731952209461", Color3.fromRGB(60, 65, 60), Color3.fromRGB(80, 85, 80))
@@ -499,8 +499,8 @@ local function makeUI()
 		end
 
 		Lootlibs.Activated:Connect(function()
-			setclipboard("https://ads.luarmor.net/get_key?for=work-JWCiabiNjubp")
-			StatusLabel.Text = "This is acsually workink not lootlabs cuz it pmo"
+			setclipboard("https://fartsaken.mypaylix.gg/")
+			StatusLabel.Text = "Shop Link Copied!"
 			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Lootlibs.Parent)
 		end)
 
