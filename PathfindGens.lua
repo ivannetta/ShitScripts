@@ -1,3 +1,4 @@
+--!nocheck
 if getgenv and tonumber(getgenv().LoadTime) then
 	task.wait(tonumber(getgenv().LoadTime))
 else
@@ -5,13 +6,12 @@ else
 		task.wait()
 	until game:IsLoaded()
 end
-local VIMVIM = game:GetService("VirtualInputManager")
-local HttpService = game:GetService("HttpService")
+
 local TeleportService = game:GetService("TeleportService")
-local PathfindingService = game:GetService("PathfindingService")
 local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
 
 local DCWebhook = (getgenv and getgenv().DiscordWebhook) or false
 local GenTime = tonumber(getgenv and getgenv().GeneratorTime) or 2.5
@@ -24,25 +24,26 @@ local GenTime = tonumber(getgenv and getgenv().GeneratorTime) or 2.5
 --     ]])
 -- end
 
-local Nnnnnnotificvationui
-local AliveNotificaiotna = {}
-local ProfilePicture = ""
+local NotificationUI: ScreenGui
+local NotificationsTable: { Instance: Frame } = {}
+local ProfilePicture: string = ""
+local SprintingModule: any
 
 if DCWebhook == "" then
 	DCWebhook = false
 end
 
 local function CreateNotificationUI()
-	if Nnnnnnotificvationui then
-		return Nnnnnnotificvationui
+	if NotificationUI then
+		return NotificationUI
 	end
 
-	Nnnnnnotificvationui = Instance.new("ScreenGui")
-	Nnnnnnotificvationui.Name = "NotificationUI"
-	Nnnnnnotificvationui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	Nnnnnnotificvationui.Parent = game:GetService("CoreGui")
+	NotificationUI = Instance.new("ScreenGui")
+	NotificationUI.Name = "NotificationUI"
+	NotificationUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	NotificationUI.Parent = game:GetService("CoreGui")
 
-	return Nnnnnnotificvationui
+	return NotificationUI
 end
 
 local function MakeNotif(title, message, duration, color)
@@ -103,7 +104,7 @@ local function MakeNotif(title, message, duration, color)
 	barCorner.Parent = colorBar
 
 	local offsit = 0
-	for _, notif in pairs(AliveNotificaiotna) do
+	for _, notif in pairs(NotificationsTable) do
 		if notif.Instance and notif.Instance.Parent then
 			offsit = offsit + notif.Instance.Size.Y.Offset + 10
 		end
@@ -111,7 +112,7 @@ local function MakeNotif(title, message, duration, color)
 
 	local tagit = UDim2.new(1, -270, 1, -90 - offsit)
 
-	table.insert(AliveNotificaiotna, {
+	table.insert(NotificationsTable, {
 		Instance = notification,
 		ExpireTime = os.time() + duration,
 	})
@@ -132,9 +133,9 @@ local function MakeNotif(title, message, duration, color)
 		tweenOut:Play()
 		tweenOut.Completed:Wait()
 
-		for i, notif in pairs(AliveNotificaiotna) do
+		for i, notif in pairs(NotificationsTable) do
 			if notif.Instance == notification then
-				table.remove(AliveNotificaiotna, i)
+				table.remove(NotificationsTable, i)
 				break
 			end
 		end
@@ -143,7 +144,7 @@ local function MakeNotif(title, message, duration, color)
 
 		task.wait()
 		local currentOffset = 0
-		for _, notif in pairs(AliveNotificaiotna) do
+		for _, notif in pairs(NotificationsTable) do
 			if notif.Instance and notif.Instance.Parent then
 				game:GetService("TweenService")
 					:Create(
@@ -166,18 +167,18 @@ task.spawn(function()
 		local currentTime = os.time()
 		local reposition = false
 
-		for i = #AliveNotificaiotna, 1, -1 do
-			local notif = AliveNotificaiotna[i]
+		for i = #NotificationsTable, 1, -1 do
+			local notif = NotificationsTable[i]
 			if currentTime > notif.ExpireTime and notif.Instance and notif.Instance.Parent then
 				notif.Instance:Destroy()
-				table.remove(AliveNotificaiotna, i)
+				table.remove(NotificationsTable, i)
 				reposition = true
 			end
 		end
 
 		if reposition then
 			local currentOffset = 0
-			for _, notif in pairs(AliveNotificaiotna) do
+			for _, notif in pairs(NotificationsTable) do
 				if notif.Instance and notif.Instance.Parent then
 					notif.Instance.Position = UDim2.new(1, -270, 1, -90 - currentOffset)
 					currentOffset = currentOffset + notif.Instance.Size.Y.Offset + 10
@@ -197,9 +198,6 @@ local function GetProfilePicture()
 			.. PlayerID
 			.. "&size=180x180&format=png",
 		Method = "GET",
-		Headers = {
-			["User-Agent"] = "Mozilla/5.0",
-		},
 	})
 	local urlStart, urlEnd = string.find(response.Body, "https://[%w-_%.%?%.:/%+=&]+")
 	if urlStart and urlEnd then
@@ -268,23 +266,21 @@ end
 _G.CancelPathEvent = Instance.new("BindableEvent")
 
 pcall(function()
-	local Controller =
-		require(game.Players.LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetControls()
+	local Controller = require(LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetControls()
 	Controller:Disable()
 end)
 
-local function teleportToRandomServer()
+local function TpRandom()
 	local Counter = 0
 	local MaxRetry = 10
 	local RetryingDelays = 10
 
-	local Request = http_request or syn.request or request
-	if Request then
+	if request then
 		local url = "https://games.roblox.com/v1/games/18687417158/servers/Public?sortOrder=Asc&limit=100"
 
 		while Counter < MaxRetry do
 			local success, response = pcall(function()
-				return Request({
+				return request({
 					Url = url,
 					Method = "GET",
 					Headers = { ["Content-Type"] = "application/json" },
@@ -328,13 +324,13 @@ task.delay(2.5, function()
 		local totalSeconds = tonumber(minutes) * 60 + tonumber(seconds)
 		print(totalSeconds .. " Left till round end.")
 		MakeNotif("PathfindGens", "Round ends in " .. totalSeconds .. " seconds.", 5, Color3.fromRGB(115, 194, 89))
-		if totalSeconds > 90 then
-			teleportToRandomServer()
+		if totalSeconds > 50 then
+			TpRandom()
 		end
 	end)
 end)
 
-local function findGenerators()
+local function FindGen()
 	local folder = workspace:FindFirstChild("Map") and workspace.Map:FindFirstChild("Ingame")
 	local map = folder and folder:FindFirstChild("Map")
 	local generators = {}
@@ -355,15 +351,25 @@ local function findGenerators()
 	end
 
 	table.sort(generators, function(a, b)
-		local player = Players.LocalPlayer
-		local character = player.Character
-		if not character or not character:FindFirstChild("HumanoidRootPart") then
+		local killersFolder = workspace:FindFirstChild("Players") and workspace.Players:FindFirstChild("Killers")
+		if not killersFolder then
 			return false
 		end
-		local rootPart = character:FindFirstChild("HumanoidRootPart")
+
+		local killers = killersFolder:GetChildren()
+		if #killers == 0 then
+			return false
+		end
+
+		local killer = killers[1]
+		if not killer or not killer:FindFirstChild("HumanoidRootPart") then
+			return false
+		end
+
+		local killerPosition = killer.HumanoidRootPart.Position
 		local aPosition = a:IsA("Model") and a:GetPivot().Position or a.Position
 		local bPosition = b:IsA("Model") and b:GetPivot().Position or b.Position
-		return (aPosition - rootPart.Position).Magnitude < (bPosition - rootPart.Position).Magnitude
+		return (aPosition - killerPosition).Magnitude > (bPosition - killerPosition).Magnitude
 	end)
 
 	return generators
@@ -389,7 +395,6 @@ local function VisualizePivot(model)
 	end
 end
 
-
 local function InGenerator()
 	for i, v in ipairs(game:GetService("Players").LocalPlayer.PlayerGui.TemporaryUI:GetChildren()) do
 		print(v.Name)
@@ -403,9 +408,9 @@ local function InGenerator()
 end
 
 local function PathFinding(generator)
-	local success, SkibidiSprinting = pcall(function()
-		local a = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
-		a.StaminaLossDisabled = true
+	pcall(function()
+		SprintingModule = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+		SprintingModule.StaminaLossDisabled = true
 	end)
 
 	local activeNodes = {}
@@ -482,6 +487,8 @@ local function PathFinding(generator)
 	for i, waypoint in ipairs(waypoints) do
 		createNode(waypoint.Position)
 		humanoid:MoveTo(waypoint.Position)
+		SprintingModule.IsSprinting = true
+		LocalPlayer.Character.SpeedMultipliers.Sprinting.Value = 2.15
 
 		local reachedWaypoint = false
 		local startTime = tick()
@@ -495,9 +502,6 @@ local function PathFinding(generator)
 		end
 
 		if not reachedWaypoint then
-			if game:GetService("Players").LocalPlayer.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("Sprinting").Value < 1.1 then
-				VIMVIM:SendKeyEvent(true, Enum.KeyCode.LeftShift, false, nil)
-			end
 			return false
 		end
 	end
@@ -510,7 +514,7 @@ local function PathFinding(generator)
 end
 
 local function DoAllGenerators()
-	for _, g in ipairs(findGenerators()) do
+	for _, g in ipairs(FindGen()) do
 		local pathStarted = false
 		for attempt = 1, 3 do
 			-- dont need cuz im sigma mafiza boy
@@ -591,10 +595,15 @@ local function DoAllGenerators()
 		".gg/fartsaken | <3"
 	)
 	task.wait(1)
-	teleportToRandomServer()
+	TpRandom()
 end
 
 local function AmIInGameYet()
+
+	if LocalPlayer.Character.Parent == workspace.Players.Survivors then
+		DoAllGenerators()
+	end
+
 	workspace.Players.Survivors.ChildAdded:Connect(function(child)
 		task.wait(1)
 		if child == game:GetService("Players").LocalPlayer.Character then
@@ -629,7 +638,7 @@ local function DidiDie()
 					".gg/fartsaken | <3"
 				)
 				task.wait(0.5)
-				teleportToRandomServer()
+				TpRandom()
 				break
 			end
 		end
