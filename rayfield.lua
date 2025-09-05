@@ -1677,6 +1677,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			return
 		end
 
+		Passthrough = true
 		if isfolder and not isfolder(RayfieldFolder.."/Key System") then
 			makefolder(RayfieldFolder.."/Key System")
 		end
