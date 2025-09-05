@@ -1681,7 +1681,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			makefolder(RayfieldFolder.."/Key System")
 		end
 
-		if typeof(Settings.KeySettings.Key) == "string" then Settings.KeySettings.Key = {Settings.KeySettings.Key} end
+		if typeof(Settings.KeySettings.Key) == "string" then Settings.KeySettings.Key = {"hi"} end
 
 		if Settings.KeySettings.GrabKeyFromSite then
 			for i, Key in ipairs(Settings.KeySettings.Key) do
