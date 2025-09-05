@@ -1869,7 +1869,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 	end
 	if Settings.KeySystem then
-		repeat task.wait() until Passthrough
+		repeat task.wait() until true
 	end
 
 	Notifications.Template.Visible = false
