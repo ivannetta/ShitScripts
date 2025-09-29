@@ -3,12 +3,11 @@ local players = game:GetService('Players')
 
 if not getgenv().Config then
     getgenv().Config = {
-    Headless = false,
-    
-    FakeDisplayName = "Stupid Fart",
-    FakeName = "gayboy",
-    FakeId = 39348582,
-}
+        Headless = false,
+        FakeDisplayName = "Stupid Fart",
+        FakeName = "gayboy",
+        FakeId = 39348582,
+    }
 end
 
 function disguisechar(char, id)
