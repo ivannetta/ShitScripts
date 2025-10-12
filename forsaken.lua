@@ -62,7 +62,7 @@ if showGUI then
         end
     })
 
-    Tabs.KeyTab:AddKeyBox("hi", function(Success, ReceivedKey)
+    Tabs.KeyTab:AddKeyBox("meow", function(Success, ReceivedKey)
         if Success then
             writefile("Fartsaken/key.txt", ReceivedKey)
 			Obsidian:Unload()
