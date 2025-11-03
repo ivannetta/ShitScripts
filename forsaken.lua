@@ -15,7 +15,7 @@ end
 
 if isfile("Fartsaken/key.txt") then
     local file = readfile("Fartsaken/key.txt")
-    if file == "meow" then
+    if file == "syruppy" then
         loadstring(game:HttpGet(scripturl))()
         showGUI = false
     end
@@ -62,7 +62,7 @@ if showGUI then
         end
     })
 
-    Tabs.KeyTab:AddKeyBox("meow", function(Success, ReceivedKey)
+    Tabs.KeyTab:AddKeyBox("syruppy", function(Success, ReceivedKey)
         if Success then
             writefile("Fartsaken/key.txt", ReceivedKey)
 			Obsidian:Unload()
