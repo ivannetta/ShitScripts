@@ -15,7 +15,7 @@ end
 
 if isfile("Fartsaken/key.txt") then
     local file = readfile("Fartsaken/key.txt")
-    if file == "syruppy" then
+    if file == "epstein" then
         loadstring(game:HttpGet(scripturl))()
         showGUI = false
     end
