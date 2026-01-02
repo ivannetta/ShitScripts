@@ -1,18 +1,142 @@
 --!nocheck
 --!nolint
 
--- services
+local CoreGui = game:GetService("CoreGui")
 local runService = game:GetService("RunService")
 local players = game:GetService("Players")
 local workspace = game:GetService("Workspace")
 
--- variables
 local localPlayer = players.LocalPlayer
 local camera = workspace.CurrentCamera
 local viewportSize = camera.ViewportSize
+
 local container = Instance.new("Folder", gethui and gethui() or game:GetService("CoreGui"))
 
--- locals
+local skeleton = Instance.new("Model")
+skeleton.Name = "Skeleton"
+skeleton.WorldPivot = CFrame.new(-3, 2.5, 71.3599701, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+local head = Instance.new("Part")
+head.Name = "Head"
+head.Anchored = true
+head.BottomSurface = Enum.SurfaceType.Smooth
+head.BrickColor = BrickColor.Black()
+head.CFrame = CFrame.new(-3, 4.5, 71.3599701, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+head.Color = Color3.fromRGB(27, 42, 53)
+head.Size = Vector3.new(1.7, 0.851, 0.851)
+head.TopSurface = Enum.SurfaceType.Smooth
+
+local mesh = Instance.new("SpecialMesh")
+mesh.Name = "Mesh"
+mesh.MeshType = Enum.MeshType.FileMesh
+mesh.MeshId = "http://www.roblox.com/asset/?id=36869983"
+mesh.TextureId = "http://www.roblox.com/asset/?id=36869975"
+mesh.Scale = Vector3.new(0.851, 0.851, 0.851)
+mesh.Parent = head
+
+head.Parent = skeleton
+
+local torso = Instance.new("Part")
+torso.Name = "Torso"
+torso.Anchored = true
+torso.BottomSurface = Enum.SurfaceType.Smooth
+torso.BrickColor = BrickColor.Black()
+torso.CFrame = CFrame.new(-3, 3, 71.3599701, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+torso.Color = Color3.fromRGB(27, 42, 53)
+torso.Size = Vector3.new(2, 2, 1)
+torso.TopSurface = Enum.SurfaceType.Smooth
+
+local mesh1 = Instance.new("SpecialMesh")
+mesh1.Name = "Mesh"
+mesh1.MeshType = Enum.MeshType.FileMesh
+mesh1.MeshId = "http://www.roblox.com/asset/?id=36780113"
+mesh1.TextureId = "http://www.roblox.com/asset/?id=36780292"
+mesh1.Parent = torso
+
+torso.Parent = skeleton
+
+local rightArm = Instance.new("Part")
+rightArm.Name = "Right Arm"
+rightArm.Anchored = true
+rightArm.BottomSurface = Enum.SurfaceType.Smooth
+rightArm.BrickColor = BrickColor.Black()
+rightArm.CFrame = CFrame.new(-1.5, 3, 71.3599701, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+rightArm.Color = Color3.fromRGB(27, 42, 53)
+rightArm.Size = Vector3.new(1, 2, 1)
+rightArm.TopSurface = Enum.SurfaceType.Smooth
+
+local mesh2 = Instance.new("SpecialMesh")
+mesh2.Name = "Mesh"
+mesh2.MeshType = Enum.MeshType.FileMesh
+mesh2.MeshId = "http://www.roblox.com/asset/?id=36780156"
+mesh2.TextureId = "http://www.roblox.com/asset/?id=36780292"
+mesh2.Parent = rightArm
+
+rightArm.Parent = skeleton
+
+local leftArm = Instance.new("Part")
+leftArm.Name = "Left Arm"
+leftArm.Anchored = true
+leftArm.BottomSurface = Enum.SurfaceType.Smooth
+leftArm.BrickColor = BrickColor.Black()
+leftArm.CFrame = CFrame.new(-4.5, 3, 71.3599701, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+leftArm.Color = Color3.fromRGB(27, 42, 53)
+leftArm.Size = Vector3.new(1, 2, 1)
+leftArm.TopSurface = Enum.SurfaceType.Smooth
+
+local mesh3 = Instance.new("SpecialMesh")
+mesh3.Name = "Mesh"
+mesh3.MeshType = Enum.MeshType.FileMesh
+mesh3.MeshId = "http://www.roblox.com/asset/?id=36780032"
+mesh3.TextureId = "http://www.roblox.com/asset/?id=36780292"
+mesh3.Parent = leftArm
+
+leftArm.Parent = skeleton
+
+local leftLeg = Instance.new("Part")
+leftLeg.Name = "Left Leg"
+leftLeg.Anchored = true
+leftLeg.BottomSurface = Enum.SurfaceType.Smooth
+leftLeg.BrickColor = BrickColor.Black()
+leftLeg.CFrame = CFrame.new(-3.5, 1, 71.3599701, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+leftLeg.Color = Color3.fromRGB(27, 42, 53)
+leftLeg.Size = Vector3.new(1, 2, 1)
+leftLeg.TopSurface = Enum.SurfaceType.Smooth
+
+local mesh4 = Instance.new("SpecialMesh")
+mesh4.Name = "Mesh"
+mesh4.MeshType = Enum.MeshType.FileMesh
+mesh4.MeshId = "http://www.roblox.com/asset/?id=36780079"
+mesh4.TextureId = "http://www.roblox.com/asset/?id=36780292"
+mesh4.Parent = leftLeg
+
+leftLeg.Parent = skeleton
+
+local rightLeg = Instance.new("Part")
+rightLeg.Name = "Right Leg"
+rightLeg.Anchored = true
+rightLeg.BottomSurface = Enum.SurfaceType.Smooth
+rightLeg.BrickColor = BrickColor.Black()
+rightLeg.CFrame = CFrame.new(-2.5, 1, 71.3599701, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+rightLeg.Color = Color3.fromRGB(27, 42, 53)
+rightLeg.Size = Vector3.new(1, 2, 1)
+rightLeg.TopSurface = Enum.SurfaceType.Smooth
+
+local mesh5 = Instance.new("SpecialMesh")
+mesh5.Name = "Mesh"
+mesh5.MeshType = Enum.MeshType.FileMesh
+mesh5.MeshId = "http://www.roblox.com/asset/?id=36780195"
+mesh5.TextureId = "http://www.roblox.com/asset/?id=36780292"
+mesh5.Parent = rightLeg
+
+rightLeg.Parent = skeleton
+skeleton.Parent = container
+
+
+
+
+
+
 local floor = math.floor
 local round = math.round
 local sin = math.sin
@@ -23,7 +147,6 @@ local find = table.find
 local create = table.create
 local fromMatrix = CFrame.fromMatrix
 
--- methods
 local wtvp = camera.WorldToViewportPoint
 local isA = workspace.IsA
 local getPivot = workspace.GetPivot
@@ -39,7 +162,6 @@ local lerp2 = Vector2.zero.Lerp
 local min3 = Vector3.zero.Min
 local max3 = Vector3.zero.Max
 
--- constants
 local HEALTH_BAR_OFFSET = Vector2.new(5, 0)
 local HEALTH_TEXT_OFFSET = Vector2.new(3, 0)
 local HEALTH_BAR_OUTLINE_OFFSET = Vector2.new(0, 1)
@@ -56,7 +178,29 @@ local VERTICES = {
 	Vector3.new(1, -1, 1),
 }
 
--- functions
+local skeletonSource = container:WaitForChild("Skeleton")
+
+local skeletonGui = Instance.new("ScreenGui")
+skeletonGui.Name = "SkeletonOverlay"
+skeletonGui.IgnoreGuiInset = true
+skeletonGui.DisplayOrder = 200
+skeletonGui.ResetOnSpawn = false
+skeletonGui.Parent = gethui and gethui() or game:GetService("CoreGui")
+
+local skeletonViewport = Instance.new("ViewportFrame")
+skeletonViewport.Size = UDim2.fromScale(1, 1)
+skeletonViewport.BackgroundTransparency = 1
+skeletonViewport.Ambient = Color3.new(1, 1, 1)
+skeletonViewport.LightColor = Color3.new(1, 1, 1)
+skeletonViewport.Parent = skeletonGui
+
+local skeletonCamera = Instance.new("Camera")
+skeletonCamera.Parent = skeletonViewport
+skeletonViewport.CurrentCamera = skeletonCamera
+
+local skeletonWorld = Instance.new("WorldModel")
+skeletonWorld.Parent = skeletonViewport
+
 local function isBodyPart(name)
 	return name == "Head" or name:find("Torso") or name:find("Leg") or name:find("Arm")
 end
@@ -99,7 +243,6 @@ local function calculateCorners(cframe, size)
 end
 
 local function rotateVector(vector, radians)
-	-- https://stackoverflow.com/questions/28112315/how-do-i-rotate-a-vector
 	local x, y = vector.X, vector.Y
 	local c, s = cos(radians), sin(radians)
 	return Vector2.new(x * c - y * s, x * s + y * c)
@@ -112,7 +255,6 @@ local function parseColor(self, color, isOutline)
 	return color
 end
 
--- esp object
 local EspObject = {}
 EspObject.__index = EspObject
 
@@ -426,7 +568,6 @@ function EspObject:Render()
 	end
 end
 
--- cham object
 local ChamObject = {}
 ChamObject.__index = ChamObject
 
@@ -435,11 +576,11 @@ function ChamObject.new(player, interface)
 	self.player = assert(player, "Missing argument #1 (Player expected)")
 	self.interface = assert(interface, "Missing argument #2 (table expected)")
 
-    for _, HL in pairs(workspace:GetChildren()) do
-        if HL:IsA("Highlight") then
-            HL:Destroy()
-        end
-    end
+	for _, HL in pairs(workspace:GetChildren()) do
+		if HL:IsA("Highlight") then
+			HL:Destroy()
+		end
+	end
 
 	self:Construct()
 	return self
@@ -479,7 +620,122 @@ function ChamObject:Update()
 	end
 end
 
--- instance class
+local SkeletonObject = {}
+SkeletonObject.__index = SkeletonObject
+
+function SkeletonObject.new(player, interface)
+	local self = setmetatable({}, SkeletonObject)
+	self.player = assert(player, "Missing argument #1 (Player expected)")
+	self.interface = assert(interface, "Missing argument #2 (table expected)")
+	self.bindings = {}
+	self.character = nil
+	self.updateConnection = runService.Heartbeat:Connect(function()
+		self:Update()
+	end)
+	return self
+end
+
+function SkeletonObject:Destruct()
+	self.updateConnection:Disconnect()
+	for overlay in next, self.bindings do
+		if overlay.Parent then
+			overlay:Destroy()
+		end
+		self.bindings[overlay] = nil
+	end
+	self.character = nil
+end
+
+function SkeletonObject:Rebuild()
+	for overlay in next, self.bindings do
+		if overlay.Parent then
+			overlay:Destroy()
+		end
+		self.bindings[overlay] = nil
+	end
+
+	local interface = self.interface
+	local character = interface.getCharacter(self.player)
+	if not character then
+		self.character = nil
+		return
+	end
+
+	self.character = character
+
+	for _, source in ipairs(skeletonSource:GetChildren()) do
+		if isA(source, "BasePart") then
+			local target = findFirstChild(character, source.Name)
+			if target and isA(target, "BasePart") then
+				local overlay = source:Clone()
+				overlay.Anchored = true
+				overlay.CanCollide = false
+				overlay.CastShadow = false
+				overlay.Parent = skeletonWorld
+				self.bindings[overlay] = target
+			end
+		end
+	end
+end
+
+function SkeletonObject:Update()
+	local interface = self.interface
+	local character = interface.getCharacter(self.player)
+	local options = interface.teamSettings[interface.isFriendly(self.player) and "friendly" or "enemy"]
+	local enabled = options.enabled
+		and options.skeleton
+		and character
+		and not (#interface.whitelist > 0 and not find(interface.whitelist, self.player.UserId))
+
+	local currentCamera = workspace.CurrentCamera
+	if currentCamera then
+		camera = currentCamera
+		viewportSize = camera.ViewportSize
+		skeletonCamera.CFrame = camera.CFrame
+		skeletonCamera.FieldOfView = camera.FieldOfView
+	end
+
+	if not enabled then
+		for overlay in next, self.bindings do
+			overlay.Transparency = 1
+		end
+		if character ~= self.character then
+			self:Rebuild()
+		end
+		return
+	end
+
+	if character ~= self.character or not next(self.bindings) then
+		self:Rebuild()
+	end
+
+	local color = parseColor(self, options.skeletonColor[1])
+	local transparency = options.skeletonColor[2]
+
+	for overlay, limb in next, self.bindings do
+		if not limb or not limb.Parent then
+			if overlay.Parent then
+				overlay:Destroy()
+			end
+			self.bindings[overlay] = nil
+		else
+			overlay.CFrame = limb.CFrame
+			overlay.Transparency = transparency
+
+			local mesh = overlay:FindFirstChild("Mesh")
+			if not mesh then
+				mesh = overlay:FindFirstChildWhichIsA("DataModelMesh")
+			end
+
+			if mesh then
+				mesh.VertexColor = Vector3.new(color.R, color.G, color.B)
+			else
+				overlay.Color = color
+			end
+		end
+	end
+end
+
 local InstanceObject = {}
 InstanceObject.__index = InstanceObject
 
@@ -551,7 +807,6 @@ function InstanceObject:Render()
 	end
 end
 
--- interface
 local EspInterface = {
 	_hasLoaded = false,
 	_objectCache = {},
@@ -610,6 +865,8 @@ local EspInterface = {
 			chamsVisibleOnly = false,
 			chamsFillColor = { Color3.new(0.2, 0.2, 0.2), 0.5 },
 			chamsOutlineColor = { Color3.new(1, 0, 0), 0 },
+			skeleton = false,
+			skeletonColor = { Color3.new(1, 1, 1), 0 },
 		},
 		friendly = {
 			enabled = false,
@@ -657,6 +914,8 @@ local EspInterface = {
 			chamsVisibleOnly = false,
 			chamsFillColor = { Color3.new(0.2, 0.2, 0.2), 0.5 },
 			chamsOutlineColor = { Color3.new(0, 1, 0), 0 },
+			skeleton = false,
+			skeletonColor = { Color3.new(1, 1, 1), 0 },
 		},
 	},
 }
@@ -678,6 +937,7 @@ function EspInterface.Load()
 		EspInterface._objectCache[player] = {
 			EspObject.new(player, EspInterface),
 			ChamObject.new(player, EspInterface),
+			SkeletonObject.new(player, EspInterface),
 		}
 	end
 
@@ -716,7 +976,6 @@ function EspInterface.Unload()
 	EspInterface._hasLoaded = false
 end
 
--- game specific functions
 function EspInterface.getWeapon(player)
 	return "Unknown"
 end
