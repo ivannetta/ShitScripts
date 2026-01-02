@@ -63,7 +63,7 @@ if showGUI then
     })
 
     Tabs.KeyTab:AddKeyBox(function(ReceivedKey)
-        if ReceivedKey == "syruppy" then
+        if ReceivedKey == "epstein" then
             writefile("Fartsaken/key.txt", ReceivedKey)
             Obsidian:Unload()
             loadstring(game:HttpGet(scripturl))()
