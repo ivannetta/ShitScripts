@@ -643,56 +643,52 @@ function EspObject:Render()
 
 	self.KirkImage.Visible = Enabled and OnScreen and Options.kirkEsp
 	if self.KirkImage.Visible then
-		if not Visible.Box.Visible then
-			self.KirkImage.Visible = false
+		local Img = self.KirkImage
+		local Scale = Options.kirkScale or 0.96
+		local Padding = (1 - Scale) * 0.5
+		local BoxPos = Corners.TopLeft
+		local BoxSize = Corners.BottomRight - Corners.TopLeft
+
+		local FinalPos = BoxPos + BoxSize * Vector2.new(Padding, Padding)
+		local FinalSize = BoxSize * Scale
+
+		Img.Position = UDim2.fromOffset(FinalPos.X, FinalPos.Y)
+		Img.Size = UDim2.fromOffset(FinalSize.X, FinalSize.Y)
+		Img.ImageTransparency = 1 - (Options.kirkTransparency or 1)
+
+		if Options.kirkBackground then
+			local BgColor = ParseColor(self, Options.kirkBackgroundColor[1], false)
+			Img.BackgroundColor3 = BgColor
+			Img.BackgroundTransparency = Options.kirkBackgroundColor[2]
 		else
-			local Img = self.KirkImage
-			local Scale = Options.kirkScale or 0.96
-			local Padding = (1 - Scale) * 0.5
-			local BoxPos = Visible.Box.Position
-			local BoxSize = Visible.Box.Size
+			Img.BackgroundTransparency = 1
+		end
 
-			local FinalPos = BoxPos + BoxSize * Vector2.new(Padding, Padding)
-			local FinalSize = BoxSize * Scale
-
-			Img.Position = UDim2.fromOffset(FinalPos.X, FinalPos.Y)
-			Img.Size = UDim2.fromOffset(FinalSize.X, FinalSize.Y)
-			Img.ImageTransparency = 1 - (Options.kirkTransparency or 1)
-
-			if Options.kirkBackground then
-				local BgColor = ParseColor(self, Options.kirkBackgroundColor[1], false)
-				Img.BackgroundColor3 = BgColor
-				Img.BackgroundTransparency = Options.kirkBackgroundColor[2]
-			else
-				Img.BackgroundTransparency = 1
-			end
-
-			Interface.GetKirkRole = function(TargetPlayer: Player)
-				local Character = Interface.GetCharacter(TargetPlayer)
-				if not Character then
-					return "default"
-				end
-
-				local Parent = Character.Parent
-				if not Parent then
-					return "default"
-				end
-
-				if Parent.Name == "Killers" then
-					return "killer"
-				end
-
-				if Parent.Name == "Survivors" then
-					return "survivor"
-				end
-
+		Interface.GetKirkRole = function(TargetPlayer: Player)
+			local Character = Interface.GetCharacter(TargetPlayer)
+			if not Character then
 				return "default"
 			end
 
-			local Role = (Interface.GetKirkRole and Interface.GetKirkRole(self.Player)) or "default"
-			local CharName = (self.Character and self.Character.Name) or self.Player.Name
-			Img.Image = GetKirkAsset(Role, CharName) or ""
+			local Parent = Character.Parent
+			if not Parent then
+				return "default"
+			end
+
+			if Parent.Name == "Killers" then
+				return "killer"
+			end
+
+			if Parent.Name == "Survivors" then
+				return "survivor"
+			end
+
+			return "default"
 		end
+
+		local Role = (Interface.GetKirkRole and Interface.GetKirkRole(self.Player)) or "default"
+		local CharName = (self.Character and self.Character.Name) or self.Player.Name
+		Img.Image = GetKirkAsset(Role, CharName) or ""
 	end
 end
 
@@ -999,7 +995,7 @@ local EspInterface = {
 			kirkScale = 0.96,
 			kirkTransparency = 1,
 			kirkBackground = false,
-			kirkBackgroundColor = { Color3.new(0, 0, 0), 0.5 },
+			kirkBackgroundColor = { Color3.new(1, 1, 1), 0 },
 		},
 		friendly = {
 			enabled = false,
@@ -1053,7 +1049,7 @@ local EspInterface = {
 			kirkScale = 0.96,
 			kirkTransparency = 1,
 			kirkBackground = false,
-			kirkBackgroundColor = { Color3.new(0, 0, 0), 0.5 },
+			kirkBackgroundColor = { Color3.new(1, 1, 1), 0 },
 		},
 	},
 }
@@ -1120,14 +1116,15 @@ end
 
 function EspInterface.IsFriendly(Player: Player): boolean
 	local Character = Player.Character
+	local LocalCharacter = LocalPlayer.Character
 
-	if Character and Character.Parent then
-		if Character.Parent.Name == "Killers" then
-			return false
-		else
+	if Character and LocalCharacter and Character.Parent and LocalCharacter.Parent then
+		if Character.Parent.Name == "Survivors" and LocalCharacter.Parent.Name == "Survivors" then
 			return true
 		end
 	end
+
+	return Player.Team and Player.Team == LocalPlayer.Team
 end
 
 function EspInterface.GetTeamColor(Player: Player): Color3
