@@ -336,6 +336,7 @@ function EspObject:Construct()
 	self.KirkImage.Name = "KirkImage_" .. self.Player.Name
 	self.KirkImage.BackgroundTransparency = 1
 	self.KirkImage.BorderSizePixel = 0
+	self.KirkImage.ScaleType = Enum.ScaleType.Stretch
 	self.KirkImage.Visible = false
 	self.KirkImage.Parent = KirkGui
 
@@ -423,7 +424,13 @@ local function PrefetchKirkAssets()
 		if type(File) ~= "string" or File == "" or KirkAssetCache[File] then
 			return
 		end
-		local Success, Asset = pcall(getcustomasset, Base .. File)
+
+		local Path = Base .. File
+		if File:sub(-4) == ".png" then
+			Path = Path .. ".Fart"
+		end
+
+		local Success, Asset = pcall(getcustomasset, Path)
 		if Success and type(Asset) == "string" and Asset ~= "" then
 			KirkAssetCache[File] = Asset
 		end
@@ -651,6 +658,14 @@ function EspObject:Render()
 			Img.Position = UDim2.fromOffset(FinalPos.X, FinalPos.Y)
 			Img.Size = UDim2.fromOffset(FinalSize.X, FinalSize.Y)
 			Img.ImageTransparency = 1 - (Options.kirkTransparency or 1)
+
+			if Options.kirkBackground then
+				local BgColor = ParseColor(self, Options.kirkBackgroundColor[1], false)
+				Img.BackgroundColor3 = BgColor
+				Img.BackgroundTransparency = Options.kirkBackgroundColor[2]
+			else
+				Img.BackgroundTransparency = 1
+			end
 
 			Interface.GetKirkRole = function(TargetPlayer: Player)
 				local Character = Interface.GetCharacter(TargetPlayer)
@@ -983,6 +998,8 @@ local EspInterface = {
 			kirkEsp = false,
 			kirkScale = 0.96,
 			kirkTransparency = 1,
+			kirkBackground = false,
+			kirkBackgroundColor = { Color3.new(0, 0, 0), 0.5 },
 		},
 		friendly = {
 			enabled = false,
@@ -1035,6 +1052,8 @@ local EspInterface = {
 			kirkEsp = false,
 			kirkScale = 0.96,
 			kirkTransparency = 1,
+			kirkBackground = false,
+			kirkBackgroundColor = { Color3.new(0, 0, 0), 0.5 },
 		},
 	},
 }
@@ -1100,7 +1119,15 @@ function EspInterface.GetWeapon(Player: Player): string
 end
 
 function EspInterface.IsFriendly(Player: Player): boolean
-	return Player.Team and Player.Team == LocalPlayer.Team
+	local Character = Player.Character
+
+	if Character and Character.Parent then
+		if Character.Parent.Name == "Killers" then
+			return false
+		else
+			return true
+		end
+	end
 end
 
 function EspInterface.GetTeamColor(Player: Player): Color3
