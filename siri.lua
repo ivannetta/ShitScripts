@@ -356,7 +356,7 @@ function EspObject:Construct()
 	self.IconBillboard.Adornee = nil
 	self.IconBillboard.AlwaysOnTop = true
 	self.IconBillboard.Size = UDim2.fromOffset(250, 60)
-	self.IconBillboard.StudsOffset = Vector3.new(0, 4, 0) 
+	self.IconBillboard.StudsOffset = Vector3.new(0, 4, 0)
 	self.IconBillboard.ResetOnSpawn = false
 	self.IconBillboard.Parent = IconGui
 
@@ -1242,16 +1242,11 @@ function EspInterface.GetWeapon(Player: Player): string
 end
 
 function EspInterface.IsFriendly(Player: Player): boolean
-	local Character = Player.Character
-	local LocalCharacter = LocalPlayer.Character
-
-	if Character and LocalCharacter and Character.Parent and LocalCharacter.Parent then
-		if Character.Parent.Name == "Survivors" and LocalCharacter.Parent.Name == "Survivors" then
-			return true
-		end
+	if Player.Character and Player.Character.Parent then
+		return Player.Character.Parent.Name == "Survivors"
 	end
 
-	return Player.Team and Player.Team == LocalPlayer.Team
+	return false
 end
 
 function EspInterface.GetTeamColor(Player: Player): Color3
