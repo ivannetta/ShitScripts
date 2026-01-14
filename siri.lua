@@ -1,6 +1,8 @@
 --!nocheck
 --!nolint
 
+local KirkImagesInput, CharacterIconsInput, DeviceIconsInput = ...
+
 local CoreGui: CoreGui = game:GetService("CoreGui")
 local RS: RunService = game:GetService("RunService")
 local Players: Players = game:GetService("Players")
@@ -12,12 +14,14 @@ local ViewportSize: Vector2 = Camera.ViewportSize
 
 local Container: Folder = Instance.new("Folder", (gethui and gethui()) or CoreGui)
 
-local KirkImages = getgenv().KirkImages or {
+local KirkImages = KirkImagesInput or {
 	default = "OriginalKirk.jpg",
 	survivor = {},
 	killer = {},
 }
-getgenv().KirkImages = KirkImages
+
+local CharacterIcons = CharacterIconsInput or {}
+local DeviceIcons = DeviceIconsInput or {}
 
 local Skeleton: Model = Instance.new("Model")
 Skeleton.Name = "Skeleton"
@@ -210,6 +214,13 @@ KirkGui.DisplayOrder = 201
 KirkGui.ResetOnSpawn = false
 KirkGui.Parent = (gethui and gethui()) or CoreGui
 
+local IconGui: ScreenGui = Instance.new("ScreenGui")
+IconGui.Name = "IconOverlay"
+IconGui.IgnoreGuiInset = true
+IconGui.DisplayOrder = 202
+IconGui.ResetOnSpawn = false
+IconGui.Parent = (gethui and gethui()) or CoreGui
+
 local function IsBodyPart(Name: string): boolean
 	return Name == "Head" or Name:find("Torso") or Name:find("Leg") or Name:find("Arm")
 end
@@ -340,6 +351,44 @@ function EspObject:Construct()
 	self.KirkImage.Visible = false
 	self.KirkImage.Parent = KirkGui
 
+	self.IconBillboard = Instance.new("BillboardGui")
+	self.IconBillboard.Name = "IconESP_" .. self.Player.Name
+	self.IconBillboard.Adornee = nil
+	self.IconBillboard.AlwaysOnTop = true
+	self.IconBillboard.Size = UDim2.fromOffset(250, 60)
+	self.IconBillboard.StudsOffset = Vector3.new(0, 4, 0)
+	self.IconBillboard.ResetOnSpawn = false
+	self.IconBillboard.Parent = IconGui
+
+	local IconContainer = Instance.new("Frame")
+	IconContainer.Name = "Container"
+	IconContainer.Size = UDim2.fromScale(1, 1)
+	IconContainer.BackgroundTransparency = 1
+	IconContainer.Parent = self.IconBillboard
+
+	local IconLayout = Instance.new("UIListLayout")
+	IconLayout.FillDirection = Enum.FillDirection.Horizontal
+	IconLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	IconLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	IconLayout.Padding = UDim.new(0, 5)
+	IconLayout.Parent = IconContainer
+
+	self.CharacterIcon = Instance.new("ImageLabel")
+	self.CharacterIcon.Name = "CharIcon"
+	self.CharacterIcon.BackgroundTransparency = 1
+	self.CharacterIcon.ScaleType = Enum.ScaleType.Fit
+	self.CharacterIcon.Parent = IconContainer
+
+	local IconCorner = Instance.new("UICorner")
+	IconCorner.CornerRadius = UDim.new(1, 0)
+	IconCorner.Parent = self.CharacterIcon
+
+	self.DeviceIcon = Instance.new("ImageLabel")
+	self.DeviceIcon.Name = "DeviceIcon"
+	self.DeviceIcon.BackgroundTransparency = 1
+	self.DeviceIcon.ScaleType = Enum.ScaleType.Fit
+	self.DeviceIcon.Parent = IconContainer
+
 	self.RenderConnection = RS.Heartbeat:Connect(function(DeltaTime: number)
 		self:Update(DeltaTime)
 		self:Render(DeltaTime)
@@ -351,6 +400,10 @@ function EspObject:Destruct()
 
 	if self.KirkImage then
 		self.KirkImage:Destroy()
+	end
+
+	if self.IconBillboard then
+		self.IconBillboard:Destroy()
 	end
 
 	for i = 1, #self.Bin do
@@ -372,6 +425,13 @@ function EspObject:Update()
 		and not (#Interface.whitelist > 0 and not Find(Interface.whitelist, self.Player.UserId))
 
 	local TargetHead = self.Enabled and FindFirstChild(self.Character, "Head")
+
+	if TargetHead then
+		self.IconBillboard.Adornee = TargetHead
+	else
+		self.IconBillboard.Adornee = nil
+	end
+
 	if not TargetHead then
 		self.CharCache = {}
 		self.OnScreen = false
@@ -690,6 +750,65 @@ function EspObject:Render()
 		local CharName = (self.Character and self.Character.Name) or self.Player.Name
 		Img.Image = GetKirkAsset(Role, CharName) or ""
 	end
+
+	local IconBillboard = self.IconBillboard
+	local CharIcon = self.CharacterIcon
+	local DeviceIcon = self.DeviceIcon
+
+	IconBillboard.Enabled = Enabled and (Options.characterIcon or Options.deviceIcon)
+
+	if IconBillboard.Enabled then
+		local Size = Options.iconSize or 40
+		local Transparency = 1 - (Options.iconOpacity or 1)
+
+		CharIcon.Size = UDim2.fromOffset(Size, Size)
+		DeviceIcon.Size = UDim2.fromOffset(Size, Size)
+
+		CharIcon.ImageTransparency = Transparency
+		DeviceIcon.ImageTransparency = Transparency
+		if Options.characterIcon then
+			CharIcon.Visible = true
+
+			local CharacterName = nil
+			local PlayerData = self.Player:FindFirstChild("PlayerData")
+			local Equipped = PlayerData and PlayerData:FindFirstChild("Equipped")
+
+			if Equipped and self.Character and self.Character.Parent then
+				if self.Character.Parent.Name == "Killers" then
+					local Val = Equipped:FindFirstChild("Killer")
+					if Val then
+						CharacterName = Val.Value
+					end
+				elseif self.Character.Parent.Name == "Survivors" then
+					local Val = Equipped:FindFirstChild("Survivor")
+					if Val then
+						CharacterName = Val.Value
+					end
+				end
+			end
+
+			if CharacterName and CharacterIcons[CharacterName] then
+				CharIcon.Image = CharacterIcons[CharacterName]
+			else
+				CharIcon.Visible = false
+			end
+		else
+			CharIcon.Visible = false
+		end
+
+		if Options.deviceIcon then
+			DeviceIcon.Visible = true
+			local Device = self.Player:GetAttribute("Device")
+
+			if Device and DeviceIcons[Device] then
+				DeviceIcon.Image = DeviceIcons[Device]
+			else
+				DeviceIcon.Visible = false
+			end
+		else
+			DeviceIcon.Visible = false
+		end
+	end
 end
 
 local ChamObject = {}
@@ -996,6 +1115,10 @@ local EspInterface = {
 			kirkTransparency = 1,
 			kirkBackground = false,
 			kirkBackgroundColor = { Color3.new(1, 1, 1), 0 },
+			characterIcon = false,
+			deviceIcon = false,
+			iconSize = 40,
+			iconOpacity = 1,
 		},
 		friendly = {
 			enabled = false,
@@ -1050,6 +1173,10 @@ local EspInterface = {
 			kirkTransparency = 1,
 			kirkBackground = false,
 			kirkBackgroundColor = { Color3.new(1, 1, 1), 0 },
+			characterIcon = false,
+			deviceIcon = false,
+			iconSize = 40,
+			iconOpacity = 1,
 		},
 	},
 }
@@ -1115,16 +1242,11 @@ function EspInterface.GetWeapon(Player: Player): string
 end
 
 function EspInterface.IsFriendly(Player: Player): boolean
-	local Character = Player.Character
-	local LocalCharacter = LocalPlayer.Character
-
-	if Character and LocalCharacter and Character.Parent and LocalCharacter.Parent then
-		if Character.Parent.Name == "Survivors" and LocalCharacter.Parent.Name == "Survivors" then
-			return true
-		end
+	if Player.Character and Player.Character.Parent then
+		return Player.Character.Parent.Name == "Survivors"
 	end
 
-	return Player.Team and Player.Team == LocalPlayer.Team
+	return false
 end
 
 function EspInterface.GetTeamColor(Player: Player): Color3
