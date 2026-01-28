@@ -13,9 +13,9 @@ if not getgenv().Config then
 	}
 end
 
-Players.LocalPlayer.PlayerGui.TemporaryUI.ChildAdded:Connect(function(child)
+players.LocalPlayer.PlayerGui.TemporaryUI.ChildAdded:Connect(function(child)
     if child.Name == players.LocalPlayer.Name then
-        game:GetService("Players").LocalPlayer.PlayerGui.TemporaryUI.notIvan34.PlayerIconHolder.Player.Image = players:GetUserThumbnailAsync(getgenv().Config.FakeId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+        players.LocalPlayer.PlayerGui.TemporaryUI.notIvan34.PlayerIconHolder.Player.Image = players:GetUserThumbnailAsync(getgenv().Config.FakeId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
     end
 end)
 
