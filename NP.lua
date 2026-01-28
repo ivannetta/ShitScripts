@@ -1,23 +1,31 @@
+--!nocheck
+--!nolint
 local HttpService = game:GetService("HttpService")
-local players = game:GetService('Players')
+local players = game:GetService("Players")
 
 if not getgenv().Config then
-    getgenv().Config = {
-    Headless = false,
-    
-    FakeDisplayName = "Stupid Fart",
-    FakeName = "gayboy",
-    FakeId = 39348582,
-}
+	getgenv().Config = {
+		Headless = false,
+
+		FakeDisplayName = "Stupid Fart",
+		FakeName = "gayboy",
+		FakeId = 39348582,
+	}
 end
+
+Players.LocalPlayer.PlayerGui.TemporaryUI.ChildAdded:Connect(function(child)
+    if child.Name == players.LocalPlayer.Name then
+        game:GetService("Players").LocalPlayer.PlayerGui.TemporaryUI.notIvan34.PlayerIconHolder.Player.Image = players:GetUserThumbnailAsync(getgenv().Config.FakeId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+    end
+end)
 
 function disguisechar(char, id)
 	task.spawn(function()
-        print('called')
+		print("called")
 		if not char then
 			return
 		end
-		local hum = char:FindFirstChildOfClass('Humanoid')
+		local hum = char:FindFirstChildOfClass("Humanoid")
 		char:WaitForChild("Head")
 		local desc
 		if desc == nil then
@@ -41,12 +49,26 @@ function disguisechar(char, id)
 		end
 		disguiseclone.Humanoid:ApplyDescriptionClientServer(desc)
 		for i, v in pairs(char:GetChildren()) do
-			if (v:IsA("Accessory") and v:GetAttribute("InvItem") == nil and v:GetAttribute("ArmorSlot") == nil) or v:IsA("ShirtGraphic") or v:IsA("Shirt") or v:IsA("Pants") or v:IsA("BodyColors") then
+			if
+				(v:IsA("Accessory") and v:GetAttribute("InvItem") == nil and v:GetAttribute("ArmorSlot") == nil)
+				or v:IsA("ShirtGraphic")
+				or v:IsA("Shirt")
+				or v:IsA("Pants")
+				or v:IsA("BodyColors")
+			then
 				v.Parent = game
 			end
 		end
 		char.ChildAdded:Connect(function(v)
-			if ((v:IsA("Accessory") and v:GetAttribute("InvItem") == nil and v:GetAttribute("ArmorSlot") == nil) or v:IsA("ShirtGraphic") or v:IsA("Shirt") or v:IsA("Pants") or v:IsA("BodyColors")) and v:GetAttribute("Disguise") == nil then
+			if
+				(
+					(v:IsA("Accessory") and v:GetAttribute("InvItem") == nil and v:GetAttribute("ArmorSlot") == nil)
+					or v:IsA("ShirtGraphic")
+					or v:IsA("Shirt")
+					or v:IsA("Pants")
+					or v:IsA("BodyColors")
+				) and v:GetAttribute("Disguise") == nil
+			then
 				repeat
 					task.wait()
 					v.Parent = game
@@ -72,8 +94,8 @@ function disguisechar(char, id)
 				v.Parent = char
 			elseif v:IsA("ShirtGraphic") or v:IsA("Shirt") or v:IsA("Pants") or v:IsA("BodyColors") then
 				v.Parent = char
-			elseif v.Name == "Head" and v:FindFirstChildOfClass('SpecialMesh') then
-				char.Head:FindFirstChildOfClass('SpecialMesh').MeshId = v:FindFirstChildOfClass('SpecialMesh').MeshId
+			elseif v.Name == "Head" and v:FindFirstChildOfClass("SpecialMesh") then
+				char.Head:FindFirstChildOfClass("SpecialMesh").MeshId = v:FindFirstChildOfClass("SpecialMesh").MeshId
 			end
 		end
 		local localface = char:FindFirstChild("face", true)
@@ -139,7 +161,6 @@ players.PlayerAdded:Connect(function(player)
 	end
 end)
 
-
 local function processtext(text)
 	if not text or type(text) ~= "string" then
 		return ""
@@ -156,45 +177,45 @@ local function processtext(text)
 	return text
 end
 
-for i,v in next, game:GetDescendants() do
-    if v:IsA("TextBox") or v:IsA("TextLabel") or v:IsA("TextButton") then
-        v.Text = processtext(v.Text)
-        v.Name = processtext(v.Name)
-        v.Changed:Connect(function(property)
-            v.Text = processtext(v.Text)
-            v.Name = processtext(v.Name)
-        end)
-    end
+for i, v in next, game:GetDescendants() do
+	if v:IsA("TextBox") or v:IsA("TextLabel") or v:IsA("TextButton") then
+		v.Text = processtext(v.Text)
+		v.Name = processtext(v.Name)
+		v.Changed:Connect(function(property)
+			v.Text = processtext(v.Text)
+			v.Name = processtext(v.Name)
+		end)
+	end
 end
 game.DescendantAdded:Connect(function(descendant)
-    if descendant:IsA("TextBox") or descendant:IsA("TextLabel") or descendant:IsA("TextButton") then
-        descendant.Text = processtext(descendant.Text)
-        descendant.Name = processtext(descendant.Name)
-        descendant.Changed:Connect(function()
-            descendant.Text = processtext(descendant.Text)
-            descendant.Name = processtext(descendant.Name)
-        end)
-    end
+	if descendant:IsA("TextBox") or descendant:IsA("TextLabel") or descendant:IsA("TextButton") then
+		descendant.Text = processtext(descendant.Text)
+		descendant.Name = processtext(descendant.Name)
+		descendant.Changed:Connect(function()
+			descendant.Text = processtext(descendant.Text)
+			descendant.Name = processtext(descendant.Name)
+		end)
+	end
 end)
 lp.DisplayName = Config.FakeDisplayName
 lp.CharacterAppearanceId = Config.FakeId
 
 if Config.Headless == true then
-    task.spawn(function()
-   while wait() do
-        local char = lp.Character or lp.CharacterAdded:wait()
-        char:WaitForChild("Head").Transparency = 1
-        if char:WaitForChild("Head"):FindFirstChildOfClass("Decal") then
-            char.Head:FindFirstChildOfClass("Decal"):Destroy()
-        end
-    end
-    end)
+	task.spawn(function()
+		while wait() do
+			local char = lp.Character or lp.CharacterAdded:wait()
+			char:WaitForChild("Head").Transparency = 1
+			if char:WaitForChild("Head"):FindFirstChildOfClass("Decal") then
+				char.Head:FindFirstChildOfClass("Decal"):Destroy()
+			end
+		end
+	end)
 end
 
 pcall(function()
-   disguisechar(lp.Character,getgenv().Config.FakeId)
+	disguisechar(lp.Character, getgenv().Config.FakeId)
 end)
 
 lp.CharacterAdded:Connect(function()
-      disguisechar(lp.Character,getgenv().Config.FakeId)
+	disguisechar(lp.Character, getgenv().Config.FakeId)
 end)
