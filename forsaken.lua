@@ -511,7 +511,7 @@ local function makeUI()
 		end)
 
 		Linkvertis.Activated:Connect(function()
-			setclipboard("https://linkunlocker.com/fartsaken-key-ZMdSg")
+			setclipboard("https://linkunlocker.com/fartsaken-key-luarmor-linkvertise-SNGKc")
 			StatusLabel.Text = "Link Copied!"
 			MakeParticleSystsmeWHATUNITYPARTICLESYSTEM(Linkvertis.Parent)
 		end)
