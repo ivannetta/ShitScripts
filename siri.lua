@@ -387,7 +387,7 @@ function EspObject:Construct()
 	self.DeviceIcon.BackgroundTransparency = 1
 	self.DeviceIcon.ScaleType = Enum.ScaleType.Fit
 	self.DeviceIcon.Parent = IconContainer
-
+	
 	local DeviceCorner = Instance.new("UICorner")
 	DeviceCorner.CornerRadius = UDim.new(1, 0)
 	DeviceCorner.Parent = self.DeviceIcon
@@ -647,7 +647,7 @@ function EspObject:Render()
 		Tracer.Color = ParseColor(self, Options.tracerColor[1], false)
 		Tracer.Transparency = Options.tracerColor[2]
 		Tracer.To = (Corners.BottomLeft + Corners.BottomRight) * 0.5
-
+		
 		if Options.tracerOrigin == "Top" then
 			Tracer.From = Vector2.new(ViewportSize.X * 0.5, 0)
 		elseif Options.tracerOrigin == "Middle" then
@@ -708,7 +708,7 @@ function EspObject:Render()
 			Line3.To = Corners.Corners[i == 4 and 8 or i + 4]
 		end
 	end
-
+	
 	local Dist250 = self.Distance and self.Distance <= 250
 
 	self.KirkImage.Visible = Enabled and OnScreen and Dist250 and Options.kirkEsp
@@ -822,22 +822,28 @@ function EspObject:Render()
 end
 
 function EspObject:SetVisible(State)
-	for _, Group in pairs(self.Drawings) do
-		for _, Drawing in pairs(Group) do
-			if type(Drawing) == "table" then
-				for _, Line in pairs(Drawing) do
-					Line.Visible = State
-				end
-			else
-				Drawing.Visible = State
-			end
+	for _, Face in ipairs(self.Drawings.Box3d) do
+		for _, Line in ipairs(Face) do
+			Line.Visible = State
 		end
 	end
+
+	for _, Drawing in pairs(self.Drawings.Visible) do
+		Drawing.Visible = State
+	end
+
+	for _, Drawing in pairs(self.Drawings.Hidden) do
+		Drawing.Visible = State
+	end
+
 	if self.KirkImage then
 		self.KirkImage.Visible = State
 	end
 	if self.IconBillboard then
 		self.IconBillboard.Enabled = State
+	end
+	if self.Highlight then
+		self.Highlight.Enabled = State
 	end
 end
 
@@ -877,7 +883,12 @@ function ChamObject:Update()
 		and Character
 		and not (#Interface.whitelist > 0 and not Find(Interface.whitelist, self.Player.UserId))
 
-	Highlight.Enabled = Enabled and Options.chams
+	if not Enabled then
+		Highlight.Enabled = false
+		return
+	end
+
+	Highlight.Enabled = Options.chams
 	if Highlight.Enabled then
 		Highlight.Adornee = Character
 		Highlight.FillColor = ParseColor(self, Options.chamsFillColor[1], false)
@@ -1235,11 +1246,11 @@ function EspInterface.Load()
 
 	EspInterface.PlayerAdded = Players.PlayerAdded:Connect(CreateObject)
 	EspInterface.PlayerRemoving = Players.PlayerRemoving:Connect(RemoveObject)
-
+	
 	EspInterface.RenderConnection = RunService.RenderStepped:Connect(function(DT)
 		Camera = Workspace.CurrentCamera
 		ViewportSize = Camera.ViewportSize
-
+		
 		for _, Objects in pairs(EspInterface._ObjectCache) do
 			if Objects[1] then
 				Objects[1]:Update(DT)
@@ -1253,12 +1264,15 @@ function EspInterface.Load()
 			end
 		end
 	end)
-
+	
 	EspInterface._HasLoaded = true
 end
 
 function EspInterface.Unload()
-	assert(EspInterface._HasLoaded, "Esp has not been loaded yet.")
+	if EspInterface.RenderConnection then
+		EspInterface.RenderConnection:Disconnect()
+		EspInterface.RenderConnection = nil
+	end
 
 	for Index, Object in next, EspInterface._ObjectCache do
 		for i = 1, #Object do
@@ -1267,34 +1281,19 @@ function EspInterface.Unload()
 		EspInterface._ObjectCache[Index] = nil
 	end
 
-	EspInterface.PlayerAdded:Disconnect()
-	EspInterface.PlayerRemoving:Disconnect()
-	EspInterface.RenderConnection:Disconnect()
+	if EspInterface.PlayerAdded then
+		EspInterface.PlayerAdded:Disconnect()
+	end
+	
+	if EspInterface.PlayerRemoving then
+		EspInterface.PlayerRemoving:Disconnect()
+	end
+	
 	EspInterface._HasLoaded = false
 end
 
 function EspInterface.GetWeapon(Player)
-	if not Player.Character then
-		return ""
-	end
-
-	local items = {}
-
-	for _, child in pairs(Player.Character:GetChildren()) do
-		if child:IsA("Tool") then
-			table.insert(items, child.Name .. " [Holding]")
-		end
-	end
-
-	if Player:FindFirstChild("Backpack") then
-		for _, child in pairs(Player.Backpack:GetChildren()) do
-			if child:IsA("Tool") then
-				table.insert(items, child.Name)
-			end
-		end
-	end
-
-	return table.concat(items, "\n")
+	return "Unknown"
 end
 
 function EspInterface.IsFriendly(Player)
