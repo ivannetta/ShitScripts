@@ -3,16 +3,16 @@
 
 local KirkImagesInput, CharacterIconsInput, DeviceIconsInput = ...
 
-local CoreGui = game:GetService("CoreGui")
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-local Workspace = workspace
+local CoreGui: CoreGui = game:GetService("CoreGui")
+local RS: RunService = game:GetService("RunService")
+local Players: Players = game:GetService("Players")
+local Workspace: Workspace = workspace
 
-local LocalPlayer = Players.LocalPlayer
-local Camera = Workspace.CurrentCamera
-local ViewportSize = Camera.ViewportSize
+local LocalPlayer: Player = Players.LocalPlayer
+local Camera: Camera = Workspace.CurrentCamera
+local ViewportSize: Vector2 = Camera.ViewportSize
 
-local Container = Instance.new("Folder", (gethui and gethui()) or CoreGui)
+local Container: Folder = Instance.new("Folder", (gethui and gethui()) or CoreGui)
 
 local KirkImages = KirkImagesInput or {
 	default = "OriginalKirk.jpg",
@@ -23,11 +23,11 @@ local KirkImages = KirkImagesInput or {
 local CharacterIcons = CharacterIconsInput or {}
 local DeviceIcons = DeviceIconsInput or {}
 
-local Skeleton = Instance.new("Model")
+local Skeleton: Model = Instance.new("Model")
 Skeleton.Name = "Skeleton"
 Skeleton.WorldPivot = CFrame.new(-3, 2.5, 71.3599701, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 
-local Head = Instance.new("Part")
+local Head: Part = Instance.new("Part")
 Head.Name = "Head"
 Head.Anchored = true
 Head.BottomSurface = Enum.SurfaceType.Smooth
@@ -37,7 +37,7 @@ Head.Color = Color3.fromRGB(27, 42, 53)
 Head.Size = Vector3.new(1.7, 0.851, 0.851)
 Head.TopSurface = Enum.SurfaceType.Smooth
 
-local Mesh = Instance.new("SpecialMesh")
+local Mesh: SpecialMesh = Instance.new("SpecialMesh")
 Mesh.Name = "Mesh"
 Mesh.MeshType = Enum.MeshType.FileMesh
 Mesh.MeshId = "rbxassetid://36869983"
@@ -47,7 +47,7 @@ Mesh.Parent = Head
 
 Head.Parent = Skeleton
 
-local Torso = Instance.new("Part")
+local Torso: Part = Instance.new("Part")
 Torso.Name = "Torso"
 Torso.Anchored = true
 Torso.BottomSurface = Enum.SurfaceType.Smooth
@@ -57,7 +57,7 @@ Torso.Color = Color3.fromRGB(27, 42, 53)
 Torso.Size = Vector3.new(2, 2, 1)
 Torso.TopSurface = Enum.SurfaceType.Smooth
 
-local Mesh1 = Instance.new("SpecialMesh")
+local Mesh1: SpecialMesh = Instance.new("SpecialMesh")
 Mesh1.Name = "Mesh"
 Mesh1.MeshType = Enum.MeshType.FileMesh
 Mesh1.MeshId = "rbxassetid://36780113"
@@ -66,7 +66,7 @@ Mesh1.Parent = Torso
 
 Torso.Parent = Skeleton
 
-local RightArm = Instance.new("Part")
+local RightArm: Part = Instance.new("Part")
 RightArm.Name = "Right Arm"
 RightArm.Anchored = true
 RightArm.BottomSurface = Enum.SurfaceType.Smooth
@@ -76,7 +76,7 @@ RightArm.Color = Color3.fromRGB(27, 42, 53)
 RightArm.Size = Vector3.new(1, 2, 1)
 RightArm.TopSurface = Enum.SurfaceType.Smooth
 
-local Mesh2 = Instance.new("SpecialMesh")
+local Mesh2: SpecialMesh = Instance.new("SpecialMesh")
 Mesh2.Name = "Mesh"
 Mesh2.MeshType = Enum.MeshType.FileMesh
 Mesh2.MeshId = "rbxassetid://36780156"
@@ -85,7 +85,7 @@ Mesh2.Parent = RightArm
 
 RightArm.Parent = Skeleton
 
-local LeftArm = Instance.new("Part")
+local LeftArm: Part = Instance.new("Part")
 LeftArm.Name = "Left Arm"
 LeftArm.Anchored = true
 LeftArm.BottomSurface = Enum.SurfaceType.Smooth
@@ -95,7 +95,7 @@ LeftArm.Color = Color3.fromRGB(27, 42, 53)
 LeftArm.Size = Vector3.new(1, 2, 1)
 LeftArm.TopSurface = Enum.SurfaceType.Smooth
 
-local Mesh3 = Instance.new("SpecialMesh")
+local Mesh3: SpecialMesh = Instance.new("SpecialMesh")
 Mesh3.Name = "Mesh"
 Mesh3.MeshType = Enum.MeshType.FileMesh
 Mesh3.MeshId = "rbxassetid://36780032"
@@ -104,7 +104,7 @@ Mesh3.Parent = LeftArm
 
 LeftArm.Parent = Skeleton
 
-local LeftLeg = Instance.new("Part")
+local LeftLeg: Part = Instance.new("Part")
 LeftLeg.Name = "Left Leg"
 LeftLeg.Anchored = true
 LeftLeg.BottomSurface = Enum.SurfaceType.Smooth
@@ -114,7 +114,7 @@ LeftLeg.Color = Color3.fromRGB(27, 42, 53)
 LeftLeg.Size = Vector3.new(1, 2, 1)
 LeftLeg.TopSurface = Enum.SurfaceType.Smooth
 
-local Mesh4 = Instance.new("SpecialMesh")
+local Mesh4: SpecialMesh = Instance.new("SpecialMesh")
 Mesh4.Name = "Mesh"
 Mesh4.MeshType = Enum.MeshType.FileMesh
 Mesh4.MeshId = "rbxassetid://36780079"
@@ -123,7 +123,7 @@ Mesh4.Parent = LeftLeg
 
 LeftLeg.Parent = Skeleton
 
-local RightLeg = Instance.new("Part")
+local RightLeg: Part = Instance.new("Part")
 RightLeg.Name = "Right Leg"
 RightLeg.Anchored = true
 RightLeg.BottomSurface = Enum.SurfaceType.Smooth
@@ -133,7 +133,7 @@ RightLeg.Color = Color3.fromRGB(27, 42, 53)
 RightLeg.Size = Vector3.new(1, 2, 1)
 RightLeg.TopSurface = Enum.SurfaceType.Smooth
 
-local Mesh5 = Instance.new("SpecialMesh")
+local Mesh5: SpecialMesh = Instance.new("SpecialMesh")
 Mesh5.Name = "Mesh"
 Mesh5.MeshType = Enum.MeshType.FileMesh
 Mesh5.MeshId = "rbxassetid://36780195"
@@ -159,6 +159,7 @@ local GetPivot = Workspace.GetPivot
 local FindFirstChild = Workspace.FindFirstChild
 local FindFirstChildOfClass = Workspace.FindFirstChildOfClass
 local GetChildren = Workspace.GetChildren
+local ToOrientation = CFrame.identity.ToOrientation
 local PointToObjectSpace = CFrame.identity.PointToObjectSpace
 local LerpColor = Color3.new().Lerp
 local Min2 = Vector2.zero.Min
@@ -167,12 +168,12 @@ local Lerp2 = Vector2.zero.Lerp
 local Min3 = Vector3.zero.Min
 local Max3 = Vector3.zero.Max
 
-local HEALTH_BAR_OFFSET = Vector2.new(5, 0)
-local HEALTH_TEXT_OFFSET = Vector2.new(3, 0)
-local HEALTH_BAR_OUTLINE_OFFSET = Vector2.new(0, 1)
-local NAME_OFFSET = Vector2.new(0, 2)
-local DISTANCE_OFFSET = Vector2.new(0, 2)
-local VERTICES = {
+local HEALTH_BAR_OFFSET: Vector2 = Vector2.new(5, 0)
+local HEALTH_TEXT_OFFSET: Vector2 = Vector2.new(3, 0)
+local HEALTH_BAR_OUTLINE_OFFSET: Vector2 = Vector2.new(0, 1)
+local NAME_OFFSET: Vector2 = Vector2.new(0, 2)
+local DISTANCE_OFFSET: Vector2 = Vector2.new(0, 2)
+local VERTICES: { Vector3 } = {
 	Vector3.new(-1, -1, -1),
 	Vector3.new(-1, 1, -1),
 	Vector3.new(-1, 1, 1),
@@ -183,49 +184,49 @@ local VERTICES = {
 	Vector3.new(1, -1, 1),
 }
 
-local SkeletonSource = Container:WaitForChild("Skeleton")
+local SkeletonSource: Model = Container:WaitForChild("Skeleton")
 
-local SkeletonGui = Instance.new("ScreenGui")
+local SkeletonGui: ScreenGui = Instance.new("ScreenGui")
 SkeletonGui.Name = "SkeletonOverlay"
 SkeletonGui.IgnoreGuiInset = true
 SkeletonGui.DisplayOrder = 200
 SkeletonGui.ResetOnSpawn = false
 SkeletonGui.Parent = (gethui and gethui()) or CoreGui
 
-local SkeletonViewport = Instance.new("ViewportFrame")
+local SkeletonViewport: ViewportFrame = Instance.new("ViewportFrame")
 SkeletonViewport.Size = UDim2.fromScale(1, 1)
 SkeletonViewport.BackgroundTransparency = 1
 SkeletonViewport.Ambient = Color3.new(1, 1, 1)
 SkeletonViewport.LightColor = Color3.new(1, 1, 1)
 SkeletonViewport.Parent = SkeletonGui
 
-local SkeletonCamera = Instance.new("Camera")
+local SkeletonCamera: Camera = Instance.new("Camera")
 SkeletonCamera.Parent = SkeletonViewport
 SkeletonViewport.CurrentCamera = SkeletonCamera
 
-local SkeletonWorld = Instance.new("WorldModel")
+local SkeletonWorld: WorldModel = Instance.new("WorldModel")
 SkeletonWorld.Parent = SkeletonViewport
 
-local KirkGui = Instance.new("ScreenGui")
+local KirkGui: ScreenGui = Instance.new("ScreenGui")
 KirkGui.Name = "KirkOverlay"
 KirkGui.IgnoreGuiInset = true
 KirkGui.DisplayOrder = 201
 KirkGui.ResetOnSpawn = false
 KirkGui.Parent = (gethui and gethui()) or CoreGui
 
-local IconGui = Instance.new("ScreenGui")
+local IconGui: ScreenGui = Instance.new("ScreenGui")
 IconGui.Name = "IconOverlay"
 IconGui.IgnoreGuiInset = true
 IconGui.DisplayOrder = 202
 IconGui.ResetOnSpawn = false
 IconGui.Parent = (gethui and gethui()) or CoreGui
 
-local function IsBodyPart(Name)
+local function IsBodyPart(Name: string): boolean
 	return Name == "Head" or Name:find("Torso") or Name:find("Leg") or Name:find("Arm")
 end
 
-local function GetBoundingBox(Parts)
-	local Min, Max
+local function GetBoundingBox(Parts: { BasePart }): (CFrame, Vector3)
+	local Min: Vector3, Max: Vector3
 	for i = 1, #Parts do
 		local Part = Parts[i]
 		local Cframe, Size = Part.CFrame, Part.Size
@@ -239,12 +240,12 @@ local function GetBoundingBox(Parts)
 	return CFrame.new(Center, Front), Max - Min
 end
 
-local function WorldToScreen(World)
+local function WorldToScreen(World: Vector3): (Vector2, boolean, number)
 	local Screen, InBounds = WTVP(Camera, World)
 	return Vector2.new(Screen.X, Screen.Y), InBounds, Screen.Z
 end
 
-local function CalculateCorners(Cframe, Size)
+local function CalculateCorners(Cframe: CFrame, Size: Vector3): table
 	local Corners = Create(#VERTICES)
 	for i = 1, #VERTICES do
 		Corners[i] = WorldToScreen((Cframe + Size * 0.5 * VERTICES[i]).Position)
@@ -261,13 +262,13 @@ local function CalculateCorners(Cframe, Size)
 	}
 end
 
-local function RotateVector(Vector, Radians)
+local function RotateVector(Vector: Vector2, Radians: number): Vector2
 	local X, Y = Vector.X, Vector.Y
 	local C, S = Cos(Radians), Sin(Radians)
 	return Vector2.new(X * C - Y * S, X * S + Y * C)
 end
 
-local function ParseColor(Self, Color, IsOutline)
+local function ParseColor(Self: any, Color: Color3 | string, IsOutline: boolean): Color3
 	if Color == "Team Color" or (Self.Interface.sharedSettings.useTeamColor and not IsOutline) then
 		return Self.Interface.GetTeamColor(Self.Player) or Color3.new(1, 1, 1)
 	end
@@ -277,7 +278,7 @@ end
 local EspObject = {}
 EspObject.__index = EspObject
 
-function EspObject.New(Player, Interface)
+function EspObject.New(Player: Player, Interface: table)
 	local Self = setmetatable({}, EspObject)
 	Self.Player = assert(Player, "Missing argument #1 (Player expected)")
 	Self.Interface = assert(Interface, "Missing argument #2 (table expected)")
@@ -285,7 +286,7 @@ function EspObject.New(Player, Interface)
 	return Self
 end
 
-function EspObject:_Create(Class, Properties)
+function EspObject:_Create(Class: string, Properties: table)
 	local DrawingObject = Drawing.new(Class)
 	for Property, Value in next, Properties do
 		pcall(function()
@@ -388,12 +389,15 @@ function EspObject:Construct()
 	self.DeviceIcon.ScaleType = Enum.ScaleType.Fit
 	self.DeviceIcon.Parent = IconContainer
 
-	local DeviceCorner = Instance.new("UICorner")
-	DeviceCorner.CornerRadius = UDim.new(1, 0)
-	DeviceCorner.Parent = self.DeviceIcon
+	self.RenderConnection = RS.Heartbeat:Connect(function(DeltaTime: number)
+		self:Update(DeltaTime)
+		self:Render(DeltaTime)
+	end)
 end
 
 function EspObject:Destruct()
+	self.RenderConnection:Disconnect()
+
 	if self.KirkImage then
 		self.KirkImage:Destroy()
 	end
@@ -476,7 +480,7 @@ local function PrefetchKirkAssets()
 		return
 	end
 
-	local function Add(File)
+	local function Add(File: string)
 		if type(File) ~= "string" or File == "" or KirkAssetCache[File] then
 			return
 		end
@@ -505,7 +509,7 @@ local function PrefetchKirkAssets()
 	KirkDefaultAsset = KirkAssetCache[KirkImages.default]
 end
 
-local function GetKirkAsset(Role, PlayerName)
+local function GetKirkAsset(Role: string, PlayerName: string): string
 	local File
 	local RoleTable = type(KirkImages) == "table" and KirkImages[Role]
 	if type(RoleTable) == "table" then
@@ -529,13 +533,6 @@ function EspObject:Render()
 	local Interface = self.Interface
 	local Options = self.Options
 	local Corners = self.Corners
-
-	if not Enabled then
-		self:SetVisible(false)
-		return
-	end
-
-	self:SetVisible(true)
 
 	Visible.Box.Visible = Enabled and OnScreen and Options.box
 	Visible.BoxOutline.Visible = Visible.Box.Visible and Options.boxOutline
@@ -647,14 +644,9 @@ function EspObject:Render()
 		Tracer.Color = ParseColor(self, Options.tracerColor[1], false)
 		Tracer.Transparency = Options.tracerColor[2]
 		Tracer.To = (Corners.BottomLeft + Corners.BottomRight) * 0.5
-
-		if Options.tracerOrigin == "Top" then
-			Tracer.From = Vector2.new(ViewportSize.X * 0.5, 0)
-		elseif Options.tracerOrigin == "Middle" then
-			Tracer.From = ViewportSize * 0.5
-		else
-			Tracer.From = Vector2.new(ViewportSize.X * 0.5, ViewportSize.Y)
-		end
+		Tracer.From = Options.tracerOrigin == "Middle" and ViewportSize * 0.5
+			or Options.tracerOrigin == "Top" and ViewportSize * Vector2.new(0.5, 0)
+			or Options.tracerOrigin == "Bottom" and ViewportSize * Vector2.new(0.5, 1)
 
 		local TracerOutline = Visible.TracerOutline
 		TracerOutline.Color = ParseColor(self, Options.tracerOutlineColor[1], true)
@@ -709,9 +701,7 @@ function EspObject:Render()
 		end
 	end
 
-	local Dist250 = self.Distance and self.Distance <= 250
-
-	self.KirkImage.Visible = Enabled and OnScreen and Dist250 and Options.kirkEsp
+	self.KirkImage.Visible = Enabled and OnScreen and Options.kirkEsp
 	if self.KirkImage.Visible then
 		local Img = self.KirkImage
 		local Scale = Options.kirkScale or 0.96
@@ -734,7 +724,7 @@ function EspObject:Render()
 			Img.BackgroundTransparency = 1
 		end
 
-		Interface.GetKirkRole = function(TargetPlayer)
+		Interface.GetKirkRole = function(TargetPlayer: Player)
 			local Character = Interface.GetCharacter(TargetPlayer)
 			if not Character then
 				return "default"
@@ -765,7 +755,7 @@ function EspObject:Render()
 	local CharIcon = self.CharacterIcon
 	local DeviceIcon = self.DeviceIcon
 
-	IconBillboard.Enabled = Enabled and Dist250 and (Options.characterIcon or Options.deviceIcon)
+	IconBillboard.Enabled = Enabled and (Options.characterIcon or Options.deviceIcon)
 
 	if IconBillboard.Enabled then
 		local Size = Options.iconSize or 40
@@ -821,42 +811,10 @@ function EspObject:Render()
 	end
 end
 
-function EspObject:SetVisible(State)
-	pcall(function()
-		for _, Group in pairs(self.Drawings) do
-			for _, Drawing in pairs(Group) do
-				if type(Drawing) == "table" then
-					for _, Line in pairs(Drawing) do
-						if Line then
-							Line.Visible = State
-						end
-					end
-				else
-					if Drawing then
-						Drawing.Visible = State
-					end
-				end
-			end
-		end
-
-		if self.KirkImage then
-			self.KirkImage.Visible = State
-		end
-
-		if self.IconBillboard then
-			self.IconBillboard.Enabled = State
-		end
-
-		if self.Highlight then
-			self.Highlight.Enabled = State
-		end
-	end)
-end
-
 local ChamObject = {}
 ChamObject.__index = ChamObject
 
-function ChamObject.New(Player, Interface)
+function ChamObject.New(Player: Player, Interface: table)
 	local Self = setmetatable({}, ChamObject)
 	Self.Player = assert(Player, "Missing argument #1 (Player expected)")
 	Self.Interface = assert(Interface, "Missing argument #2 (table expected)")
@@ -873,10 +831,15 @@ end
 
 function ChamObject:Construct()
 	self.Highlight = Instance.new("Highlight", Container)
+	self.UpdateConnection = RS.Heartbeat:Connect(function()
+		self:Update()
+	end)
 end
 
 function ChamObject:Destruct()
+	self.UpdateConnection:Disconnect()
 	self.Highlight:Destroy()
+
 	Clear(self)
 end
 
@@ -889,12 +852,7 @@ function ChamObject:Update()
 		and Character
 		and not (#Interface.whitelist > 0 and not Find(Interface.whitelist, self.Player.UserId))
 
-	if not Enabled then
-		Highlight.Enabled = false
-		return
-	end
-
-	Highlight.Enabled = Options.chams
+	Highlight.Enabled = Enabled and Options.chams
 	if Highlight.Enabled then
 		Highlight.Adornee = Character
 		Highlight.FillColor = ParseColor(self, Options.chamsFillColor[1], false)
@@ -908,16 +866,20 @@ end
 local SkeletonObject = {}
 SkeletonObject.__index = SkeletonObject
 
-function SkeletonObject.New(Player, Interface)
+function SkeletonObject.New(Player: Player, Interface: table)
 	local Self = setmetatable({}, SkeletonObject)
 	Self.Player = assert(Player, "Missing argument #1 (Player expected)")
 	Self.Interface = assert(Interface, "Missing argument #2 (table expected)")
 	Self.Bindings = {}
 	Self.Character = nil
+	Self.UpdateConnection = RS.Heartbeat:Connect(function()
+		Self:Update()
+	end)
 	return Self
 end
 
 function SkeletonObject:Destruct()
+	self.UpdateConnection:Disconnect()
 	for Overlay in next, self.Bindings do
 		if Overlay.Parent then
 			Overlay:Destroy()
@@ -1020,7 +982,7 @@ end
 local InstanceObject = {}
 InstanceObject.__index = InstanceObject
 
-function InstanceObject.New(TargetInstance, Options)
+function InstanceObject.New(TargetInstance: Instance, Options: table)
 	local Self = setmetatable({}, InstanceObject)
 	Self.Instance = assert(TargetInstance, "Missing argument #1 (Instance Expected)")
 	Self.Options = assert(Options, "Missing argument #2 (table expected)")
@@ -1042,9 +1004,14 @@ function InstanceObject:Construct()
 
 	self.TextDrawing = Drawing.new("Text")
 	self.TextDrawing.Center = true
+
+	self.RenderConnection = RS.Heartbeat:Connect(function(DeltaTime: number)
+		self:Render(DeltaTime)
+	end)
 end
 
 function InstanceObject:Destruct()
+	self.RenderConnection:Disconnect()
 	self.TextDrawing:Remove()
 end
 
@@ -1214,7 +1181,7 @@ local EspInterface = {
 	},
 }
 
-function EspInterface.AddInstance(TargetInstance, Options)
+function EspInterface.AddInstance(TargetInstance: Instance, Options: table)
 	local Cache = EspInterface._ObjectCache
 	if Cache[TargetInstance] then
 		warn("Instance handler already exists.")
@@ -1227,7 +1194,7 @@ end
 function EspInterface.Load()
 	assert(not EspInterface._HasLoaded, "Esp has already been loaded.")
 
-	local function CreateObject(Player)
+	local function CreateObject(Player: Player)
 		EspInterface._ObjectCache[Player] = {
 			EspObject.New(Player, EspInterface),
 			ChamObject.New(Player, EspInterface),
@@ -1235,7 +1202,7 @@ function EspInterface.Load()
 		}
 	end
 
-	local function RemoveObject(Player)
+	local function RemoveObject(Player: Player)
 		local Object = EspInterface._ObjectCache[Player]
 		if Object then
 			for i = 1, #Object do
@@ -1252,33 +1219,11 @@ function EspInterface.Load()
 
 	EspInterface.PlayerAdded = Players.PlayerAdded:Connect(CreateObject)
 	EspInterface.PlayerRemoving = Players.PlayerRemoving:Connect(RemoveObject)
-
-	EspInterface.RenderConnection = RunService.RenderStepped:Connect(function(DT)
-		Camera = Workspace.CurrentCamera
-		ViewportSize = Camera.ViewportSize
-
-		for _, Objects in pairs(EspInterface._ObjectCache) do
-			if Objects[1] then
-				Objects[1]:Update(DT)
-				Objects[1]:Render(DT)
-			end
-			if Objects[2] then
-				Objects[2]:Update()
-			end
-			if Objects[3] then
-				Objects[3]:Update()
-			end
-		end
-	end)
-
 	EspInterface._HasLoaded = true
 end
 
 function EspInterface.Unload()
-	if EspInterface.RenderConnection then
-		EspInterface.RenderConnection:Disconnect()
-		EspInterface.RenderConnection = nil
-	end
+	assert(EspInterface._HasLoaded, "Esp has not been loaded yet.")
 
 	for Index, Object in next, EspInterface._ObjectCache do
 		for i = 1, #Object do
@@ -1287,42 +1232,16 @@ function EspInterface.Unload()
 		EspInterface._ObjectCache[Index] = nil
 	end
 
-	if EspInterface.PlayerAdded then
-		EspInterface.PlayerAdded:Disconnect()
-	end
-
-	if EspInterface.PlayerRemoving then
-		EspInterface.PlayerRemoving:Disconnect()
-	end
-
+	EspInterface.PlayerAdded:Disconnect()
+	EspInterface.PlayerRemoving:Disconnect()
 	EspInterface._HasLoaded = false
 end
 
-function EspInterface.GetWeapon(Player)
-	if not Player.Character then
-		return ""
-	end
-
-	local items = {}
-
-	for _, child in pairs(Player.Character:GetChildren()) do
-		if child:IsA("Tool") then
-			table.insert(items, child.Name .. " [Holding]")
-		end
-	end
-
-	if Player:FindFirstChild("Backpack") then
-		for _, child in pairs(Player.Backpack:GetChildren()) do
-			if child:IsA("Tool") then
-				table.insert(items, child.Name)
-			end
-		end
-	end
-
-	return table.concat(items, "\n")
+function EspInterface.GetWeapon(Player: Player): string
+	return "Unknown"
 end
 
-function EspInterface.IsFriendly(Player)
+function EspInterface.IsFriendly(Player: Player): boolean
 	if Player.Character and Player.Character.Parent then
 		return Player.Character.Parent.Name == "Survivors"
 	end
@@ -1330,15 +1249,15 @@ function EspInterface.IsFriendly(Player)
 	return false
 end
 
-function EspInterface.GetTeamColor(Player)
+function EspInterface.GetTeamColor(Player: Player): Color3
 	return Player.Team and Player.Team.TeamColor and Player.Team.TeamColor.Color
 end
 
-function EspInterface.GetCharacter(Player)
+function EspInterface.GetCharacter(Player: Player): Model?
 	return Player.Character
 end
 
-function EspInterface.GetHealth(Player)
+function EspInterface.GetHealth(Player: Player): (number, number)
 	local Character = Player and EspInterface.GetCharacter(Player)
 	local Humanoid = Character and FindFirstChildOfClass(Character, "Humanoid")
 	if Humanoid then
