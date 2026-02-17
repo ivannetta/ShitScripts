@@ -1274,7 +1274,27 @@ function EspInterface.Unload()
 end
 
 function EspInterface.GetWeapon(Player)
-	return "Unknown"
+	if not Player.Character then
+		return ""
+	end
+
+	local items = {}
+
+	for _, child in pairs(Player.Character:GetChildren()) do
+		if child:IsA("Tool") then
+			table.insert(items, child.Name .. " [Holding]")
+		end
+	end
+
+	if Player:FindFirstChild("Backpack") then
+		for _, child in pairs(Player.Backpack:GetChildren()) do
+			if child:IsA("Tool") then
+				table.insert(items, child.Name)
+			end
+		end
+	end
+
+	return table.concat(items, "\n")
 end
 
 function EspInterface.IsFriendly(Player)
