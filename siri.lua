@@ -1299,20 +1299,20 @@ function EspInterface.Unload()
 end
 
 function EspInterface.GetWeapon(Player)
-	if not player.Character then
+	if not Player.Character then
 		return ""
 	end
 
 	local items = {}
 
-	for _, child in pairs(player.Character:GetChildren()) do
+	for _, child in pairs(Player.Character:GetChildren()) do
 		if child:IsA("Tool") then
 			table.insert(items, child.Name .. " [Holding]")
 		end
 	end
 
-	if player:FindFirstChild("Backpack") then
-		for _, child in pairs(player.Backpack:GetChildren()) do
+	if Player:FindFirstChild("Backpack") then
+		for _, child in pairs(Player.Backpack:GetChildren()) do
 			if child:IsA("Tool") then
 				table.insert(items, child.Name)
 			end
