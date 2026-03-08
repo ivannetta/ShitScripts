@@ -1,1 +1,1 @@
-game.Players.LocalPlayer:Kick("Fartsaken is no longer farting")
+game.Players.LocalPlayer:Kick("discord.gg/fartsaken")
