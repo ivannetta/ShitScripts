@@ -767,8 +767,6 @@ function EspObject:Render()
 		CharIcon.ImageTransparency = Transparency
 		DeviceIcon.ImageTransparency = Transparency
 		if Options.characterIcon then
-			CharIcon.Visible = true
-
 			local CharacterName = nil
 			local PlayerData = self.Player:FindFirstChild("PlayerData")
 			local Equipped = PlayerData and PlayerData:FindFirstChild("Equipped")
@@ -776,19 +774,20 @@ function EspObject:Render()
 			if Equipped and self.Character and self.Character.Parent then
 				if self.Character.Parent.Name == "Killers" then
 					local Val = Equipped:FindFirstChild("Killer")
-					if Val then
+					if Val and type(Val.Value) == "string" then
 						CharacterName = Val.Value
 					end
 				elseif self.Character.Parent.Name == "Survivors" then
 					local Val = Equipped:FindFirstChild("Survivor")
-					if Val then
+					if Val and type(Val.Value) == "string" then
 						CharacterName = Val.Value
 					end
 				end
 			end
 
-			if CharacterName and CharacterIcons[CharacterName] then
+			if CharacterName and type(CharacterIcons) == "table" and type(CharacterIcons[CharacterName]) == "string" then
 				CharIcon.Image = CharacterIcons[CharacterName]
+				CharIcon.Visible = true
 			else
 				CharIcon.Visible = false
 			end
@@ -797,11 +796,11 @@ function EspObject:Render()
 		end
 
 		if Options.deviceIcon then
-			DeviceIcon.Visible = true
 			local Device = self.Player:GetAttribute("Device")
 
-			if Device and DeviceIcons[Device] then
+			if Device and type(DeviceIcons) == "table" and type(DeviceIcons[Device]) == "string" then
 				DeviceIcon.Image = DeviceIcons[Device]
+				DeviceIcon.Visible = true
 			else
 				DeviceIcon.Visible = false
 			end
