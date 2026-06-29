@@ -15,7 +15,7 @@ end
 
 players.LocalPlayer.PlayerGui.TemporaryUI.ChildAdded:Connect(function(child)
     if child.Name == players.LocalPlayer.Name then
-        players.LocalPlayer.PlayerGui.TemporaryUI.notIvan34.PlayerIconHolder.Player.Image = players:GetUserThumbnailAsync(getgenv().Config.FakeId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+        players.LocalPlayer.PlayerGui.TemporaryUI:FindFirstChild(players.LocalPlayer.Name).PlayerIconHolder.Player.Image = players:GetUserThumbnailAsync(getgenv().Config.FakeId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
     end
 end)
 
