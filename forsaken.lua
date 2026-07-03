@@ -61,7 +61,8 @@ if ShowGui then
     })
 
     Tabs.TermsTab:AddKeyBox(function(ReceivedInput: string)
-        if string.lower(ReceivedInput) == "agree" then
+        --if string.lower(ReceivedInput) == "agree" then
+		if true then
             writefile("FartHub/Agreed.txt", "agree")
             Obsidian:Unload()
             loadstring(game:HttpGet(ScriptUrl))()
